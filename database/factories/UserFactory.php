@@ -18,22 +18,22 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'Rachel Menezes',
-            'email' => 'rachel@ciacuidadores.com.br',
-            'password' => bcrypt('123456'),
+            'name' => 'Admin',
+            'email' => 'admin@admin.com.br',
+            'password' => bcrypt('admin'),
             'perfil' => 1,
-            'cpf_usuario' => '123-123-123-12',
-            'rg_usuario' => '12-123-123-1',
+            'cpf_usuario' => '000.000.000-00',
+            'rg_usuario' => '0.000.000-00',
             'sexo' => 'F',
             'dt_nascimento' => '1995/10/10',
             'tel_contato' => '(12) 12345-1234',
             'is_whatsapp' => true,
             'foto_perfil' => 'perfil.jpg',
-            'nome_rua' => 'Rua xxx xx xxxx',
+            'nome_rua' => 'Rua X',
             'numero_residencia' => 123,
             'cep' => '12123-123',
-            'cidade' => 'Cidade Exemplo',
-            'bairro' => 'Bairro Exemplo',
+            'cidade' => 'Cidade X',
+            'bairro' => 'Bairro X',
             'estado' => 'SP',
             'tenant_id' => 1
         ];

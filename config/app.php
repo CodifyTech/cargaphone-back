@@ -15,7 +15,7 @@ return [
     |
     */
 
-    'name' => env('APP_NAME', 'CiaCuidadores'),
+    'name' => env('APP_NAME', 'CargaPhone'),
 
     /*
     |--------------------------------------------------------------------------
