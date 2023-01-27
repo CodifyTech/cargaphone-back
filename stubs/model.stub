@@ -1,0 +1,21 @@
+<?php
+
+namespace {{ namespace }};
+
+use App\Traits\BelongsTenantScope;
+use App\Traits\Uuid;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class {{ class }} extends Model
+{
+    use HasFactory, BelongsTenantScope, Uuid;
+
+    protected $fillable = [
+        '',
+    ];
+
+    public $incrementing = false;
+
+    protected $keyType = 'uuid';
+}
