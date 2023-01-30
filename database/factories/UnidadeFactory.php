@@ -19,8 +19,8 @@ class UnidadeFactory extends Factory
         return [
             'id' => 1,
             'nome' => 'Unidade 1',
-            'cnpj_empresa' => '23543524153',
-            'nome_responsavel' => 'Rachel Menezes',
+            'cnpj_empresa' => '65.465.454/6469-46',
+            'nome_responsavel' => 'Admin',
             'dt_abertura' => '2010-10-10',
             'nome_rua' => 'Rua Teste',
             'numero' => 133,

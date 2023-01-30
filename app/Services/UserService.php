@@ -8,6 +8,7 @@ use Illuminate\Support\Str;
 use App\Exceptions\UserHasBeenTakenException;
 use App\Exceptions\WrongCpf;
 use App\Models\User;
+use Illuminate\Database\QueryException;
 use Ramsey\Uuid\Uuid;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -46,6 +47,11 @@ class UserService
 
             return $user;
         } catch (\Exception $e) {
+            if ($e instanceof QueryException) {
+                if ($e->errorInfo[2] == "Duplicate entry '{$request['email']}' for key 'users.users_email_unique'") {
+                    return 403;
+                }
+            }
             throw new InternalServerErrorException();
         }
     }

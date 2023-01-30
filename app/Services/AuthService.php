@@ -16,20 +16,18 @@ class AuthService
     {
         try {
             $user = User::where('email', $credentials['email'])->first();
+            if ($user) {
+                $token = auth()->claims([
+                    'name' => $user->name,
+                    'role_id' => $user->perfil,
+                    'tenant_id' => $user->tenant_id
+                ])->attempt($credentials);
 
-            $token = auth()->claims([
-                'name' => $user->name,
-                'role_id' => $user->perfil,
-                'tenant_id' => $user->tenant_id
-            ])->attempt($credentials);
-
-            if(!$token) {
-                return 'LoginInvalidException';
+                if (!$token) return 'LoginInvalidException';
+                return [
+                    'token' => $token,
+                ];
             }
-            
-            return [
-                'token' => $token,
-            ];
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
         }
@@ -60,7 +58,6 @@ class AuthService
                 return 'DoesNotExistsWithThisEmailException';
             }
             $token = Str::random(60);
-
             PasswordReset::create([
                 'email' => $user->email,
                 'token' => $token,

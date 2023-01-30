@@ -14,6 +14,16 @@ Route::get('ping', function () {
     ]);
 });
 
+Route::get('user', function () {
+    if (auth()->user() == null) {
+        return response()->json(['Unauthenticated.'], 401);
+    } else {
+        return response()->json([
+            auth()->user()
+        ]);
+    }
+});
+
 Route::middleware('auth:api')->group(function () {
 
     Route::prefix('usuario')->group(function () {
@@ -30,7 +40,7 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/{id}', [UserController::class, 'destroy']);
     });
 
-    Route::prefix('unidade')->group(function () {        
+    Route::prefix('unidade')->group(function () {
 
         Route::get('pesquisarpor/nome/{nome}', [UnidadeController::class, 'pesquisarNome']);
         Route::get('pesquisarpor/cnpj/{cnpj}', [UnidadeController::class, 'pesquisarCnpj']);

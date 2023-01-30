@@ -19,7 +19,7 @@ class UserFactory extends Factory
     {
         return [
             'name' => 'Admin',
-            'email' => 'admin@admin.com.br',
+            'email' => 'admin@admin.com',
             'password' => bcrypt('admin'),
             'perfil' => 1,
             'cpf_usuario' => '000.000.000-00',

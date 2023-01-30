@@ -25,7 +25,7 @@ class AuthController extends Controller
     {
         $credentials = $request->validated();
         $token = $this->authService->login($credentials);
-        if ($token == 'LoginInvalidException') {
+        if ($token == 'LoginInvalidException'|| $token == null) {
             return response()->json([
                 'exception' => 'LoginInvalidException',
                 'message' => 'E-mail e/ou senha incorretos.'

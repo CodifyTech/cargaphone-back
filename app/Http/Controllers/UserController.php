@@ -61,7 +61,7 @@ class UserController extends Controller
                 'message' => 'Já existe uma pessoa com este CPF.',
             ], 403);
         }
-        return new UserResource($user);
+        return $user;
     }
 
     /**
