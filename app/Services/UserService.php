@@ -17,7 +17,7 @@ class UserService
     public function registerUser($request)
     {
         try {
-            $existeEmail = User::where('email', $request['email'])->exists();
+            $existeEmail = User::where('email', $request['email'])->withTrashed()->exists();
             if ($existeEmail) {
                 return 403;
             }
@@ -47,11 +47,6 @@ class UserService
 
             return $user;
         } catch (\Exception $e) {
-            if ($e instanceof QueryException) {
-                if ($e->errorInfo[2] == "Duplicate entry '{$request['email']}' for key 'users.users_email_unique'") {
-                    return 403;
-                }
-            }
             throw new InternalServerErrorException();
         }
     }
