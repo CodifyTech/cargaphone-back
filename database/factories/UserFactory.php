@@ -18,14 +18,14 @@ class UserFactory extends Factory
     public function definition()
     {
         return [
-            'name' => 'Admin',
-            'email' => 'admin@admin.com',
-            'password' => bcrypt('admin'),
+            'name' => 'Felipe Aires',
+            'email' => 'felipe@cargaphone.com.br',
+            'password' => bcrypt('123456'),
             'perfil' => 1,
             'cpf_usuario' => '000.000.000-00',
             'rg_usuario' => '0.000.000-00',
             'sexo' => 'F',
-            'dt_nascimento' => '1995/10/10',
+            'dt_nascimento' => '1990/10/10',
             'tel_contato' => '(12) 12345-1234',
             'is_whatsapp' => true,
             'foto_perfil' => 'perfil.jpg',
