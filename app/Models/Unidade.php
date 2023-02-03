@@ -27,4 +27,9 @@ class Unidade extends Model
     {
         return $this->hasMany(User::class);
     }
+
+    function estabelecimentos()
+    {
+        return $this->hasMany(Estabelecimento::class);
+    }
 }
