@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\EstabelecimentoController;
-use App\Http\Controllers\UnidadeController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\{AuthController, EstabelecimentoController, TotemController, UnidadeController, UserController};
 use Illuminate\Support\Facades\Route;
 
 Route::post('auth/login', [AuthController::class, 'login']);
@@ -61,6 +58,16 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}', [EstabelecimentoController::class, 'show']);
         Route::put('/{id}', [EstabelecimentoController::class, 'update']);
         Route::delete('/{id}', [EstabelecimentoController::class, 'destroy']);
+    });
+
+    Route::prefix('totem')->group(function () {
+        Route::get('', [TotemController::class, 'index']);
+        Route::post('', [TotemController::class, 'store']);
+        Route::get('/{id}', [TotemController::class, 'show']);
+        Route::put('/{id}', [TotemController::class, 'update']);
+        Route::delete('/{id}', [TotemController::class, 'destroy']);
+        Route::get('/pesquisar/nome/{nome}', [TotemController::class, 'pesquisarNome']);
+        Route::get('/pesquisar/identificador/{identificador}', [TotemController::class, 'pesquisarIdentificador']);
     });
 
 
