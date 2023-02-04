@@ -24,17 +24,17 @@ class UpdateEstabelecimentoRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome' => 'sometimes',
-            'razao_social' => 'sometimes',
-            'cnpj' => 'sometimes',
-            'responsavel' => 'sometimes',
-            'contato_responsavel' => 'sometimes',
-            'cep' => 'sometimes',
-            'endereco' => 'sometimes',
-            'cidade' => 'sometimes',
+            'nome' => 'required',
+            'razao_social' => 'required',
+            'cnpj' => 'required',
+            'responsavel' => 'required',
+            'contato_responsavel' => 'required',
+            'cep' => 'required',
+            'endereco' => 'required',
+            'cidade' => 'required',
             'complemento' => 'sometimes',
-            'estado' => 'sometimes',
-            'tenant_id' => 'sometimes'
+            'estado' => 'required',
+            'tenant_id' => 'required'
         ];
     }
 }

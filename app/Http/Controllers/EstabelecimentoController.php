@@ -136,4 +136,64 @@ class EstabelecimentoController extends Controller
             throw new InternalServerErrorException();
         }
     }
+
+    public function pesquisarNome($nome)
+    {
+        try {
+            $Estabelecimento = Estabelecimento::where('nome', 'like', '%' .  $nome . '%')->paginate();
+            return response()->json($Estabelecimento);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    public function pesquisarCnpj($cnpj)
+    {
+        try {
+            $Estabelecimento = Estabelecimento::where('cnpj', 'like', '%' .  $cnpj . '%')->paginate();
+            return response()->json($Estabelecimento);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    public function pesquisarResponsavel($responsavel)
+    {
+        try {
+            $Estabelecimento = Estabelecimento::where('nome_responsavel', 'like', '%' .  $responsavel . '%')->paginate();
+            return response()->json($Estabelecimento);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    public function pesquisarCidade($cidade)
+    {
+        try {
+            $Estabelecimento = Estabelecimento::where('cidade', 'like', '%' .  $cidade . '%')->paginate();
+            return response()->json($Estabelecimento);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }    
+
+    public function pesquisarContato($contato)
+    {
+        try {
+            $Estabelecimento = Estabelecimento::where('contato_responsavel', 'like', '%' .  $contato . '%')->paginate();
+            return response()->json($Estabelecimento);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    public function pesquisarCep($cep)
+    {
+        try {
+            $Estabelecimento = Estabelecimento::where('cep', 'like', '%' .  $cep . '%')->paginate();
+            return response()->json($Estabelecimento);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }
 }
