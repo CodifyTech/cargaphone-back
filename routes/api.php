@@ -1,10 +1,10 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\EstabelecimentoController;
 use App\Http\Controllers\UnidadeController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
-
 
 Route::post('auth/login', [AuthController::class, 'login']);
 
@@ -12,16 +12,6 @@ Route::get('ping', function () {
     return response()->json([
         'message' => 'pong'
     ]);
-});
-
-Route::get('user', function () {
-    if (auth()->user() == null) {
-        return response()->json(['Unauthenticated.'], 401);
-    } else {
-        return response()->json([
-            auth()->user()
-        ]);
-    }
 });
 
 Route::middleware('auth:api')->group(function () {
@@ -55,9 +45,27 @@ Route::middleware('auth:api')->group(function () {
         Route::post('', [UnidadeController::class, 'store']);
     });
 
-    // Route::delete('force-exclusao/{id}', [UserController::class, 'forceDeleteUser']);
+    Route::get('user', function () {
+        if (auth()->user() == null) {
+            return response()->json(['Unauthenticated.'], 401);
+        } else {
+            return response()->json([
+                auth()->user()
+            ]);
+        }
+    });
+
+    Route::prefix('estabelecimento')->group(function () {
+        Route::get('', [EstabelecimentoController::class, 'index']);
+        Route::post('', [EstabelecimentoController::class, 'store']);
+        Route::get('/{id}', [EstabelecimentoController::class, 'show']);
+        Route::put('/{id}', [EstabelecimentoController::class, 'update']);
+        Route::delete('/{id}', [EstabelecimentoController::class, 'destroy']);
+    });
+
 
     Route::post('verificar-email', [AuthController::class, 'verifyEmail']);
+    // Route::delete('force-exclusao/{id}', [UserController::class, 'forceDeleteUser']);
 });
 Route::post('esqueceu-senha', [AuthController::class, 'forgotPassword']);
 Route::post('recuperar-senha', [AuthController::class, 'resetPassword']);
