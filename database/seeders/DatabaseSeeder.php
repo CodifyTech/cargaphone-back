@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Estabelecimento;
+use App\Models\Totem;
 use App\Models\Unidade;
 use App\Models\User;
 use Database\Factories\UserFactory;
@@ -20,5 +22,6 @@ class DatabaseSeeder extends Seeder
     {
         Unidade::factory()->create();
         User::factory()->create();
+        Totem::factory()->create();
     }
 }
