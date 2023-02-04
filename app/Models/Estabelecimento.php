@@ -34,4 +34,11 @@ class Estabelecimento extends Model
     {
         return $this->belongsTo(Unidade::class);
     }
+
+    public function totens()
+    {
+        return $this->hasMany(Totem::class);
+    }
+
+
 }
