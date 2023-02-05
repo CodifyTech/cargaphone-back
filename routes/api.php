@@ -1,9 +1,6 @@
 <?php
 
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\EstabelecimentoController;
-use App\Http\Controllers\UnidadeController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\{AuthController, EstabelecimentoController, TotemController, UnidadeController, UserController};
 use Illuminate\Support\Facades\Route;
 
 Route::post('auth/login', [AuthController::class, 'login']);
@@ -61,6 +58,22 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/{id}', [EstabelecimentoController::class, 'show']);
         Route::put('/{id}', [EstabelecimentoController::class, 'update']);
         Route::delete('/{id}', [EstabelecimentoController::class, 'destroy']);
+        Route::get('pesquisarpor/nome/{nome}', [EstabelecimentoController::class, 'pesquisarNome']);
+        Route::get('pesquisarpor/cnpj/{cnpj}', [EstabelecimentoController::class, 'pesquisarCnpj']);
+        Route::get('pesquisarpor/responsavel/{responsavel}', [EstabelecimentoController::class, 'pesquisarResponsavel']);
+        Route::get('pesquisarpor/cidade/{cidade}', [EstabelecimentoController::class, 'pesquisarCidade']);
+        Route::get('pesquisarpor/contato/{contato}', [EstabelecimentoController::class, 'pesquisarContato']);
+        Route::get('pesquisarpor/cep/{cep}', [EstabelecimentoController::class, 'pesquisarCep']);
+    });
+
+    Route::prefix('totem')->group(function () {
+        Route::get('', [TotemController::class, 'index']);
+        Route::post('', [TotemController::class, 'store']);
+        Route::get('/{id}', [TotemController::class, 'show']);
+        Route::put('/{id}', [TotemController::class, 'update']);
+        Route::delete('/{id}', [TotemController::class, 'destroy']);
+        Route::get('/pesquisarpor/nome/{nome}', [TotemController::class, 'pesquisarNome']);
+        Route::get('/pesquisarpor/identificador/{identificador}', [TotemController::class, 'pesquisarIdentificador']);
     });
 
 

@@ -8,37 +8,24 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Estabelecimento extends Model
+class Totem extends Model
 {
     use HasFactory, BelongsTenantScope, Uuid, SoftDeletes;
 
     protected $fillable = [
         'nome',
-        'razao_social',
-        'cnpj',
-        'responsavel',
-        'contato_responsavel',
-        'cep',
-        'endereco',
-        'cidade',
-        'complemento',
-        'estado',
-        'tenant_id'
+        'descricao',
+        'identificador',
+        'ativo',
+        'estabelecimento_id'
     ];
 
     public $incrementing = false;
 
     protected $keyType = 'uuid';
 
-    public function unidade()
+    public function estabelecimento()
     {
-        return $this->belongsTo(Unidade::class);
+        return $this->belongsTo(Estabelecimento::class);
     }
-
-    public function totens()
-    {
-        return $this->hasMany(Totem::class);
-    }
-
-
 }
