@@ -29,13 +29,6 @@ class TotemController extends Controller
     {
         try {
             $totems = $this->totem->paginate();
-            if ($totems == '') {
-                return response()->json([
-                    'exception' => 'NotFoundException',
-                    'message' => 'Não foi possível encontrar nenhum totem.'
-                ], 404);
-            }
-
             return response()->json($totems);
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
