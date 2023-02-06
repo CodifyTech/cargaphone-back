@@ -28,4 +28,9 @@ class Totem extends Model
     {
         return $this->belongsTo(Estabelecimento::class);
     }
+
+    public function anuncios()
+    {
+        return $this->belongsToMany(Anuncio::class);
+    }
 }
