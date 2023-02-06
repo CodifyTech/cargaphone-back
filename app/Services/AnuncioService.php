@@ -10,11 +10,10 @@ class AnuncioService
 {
     public function create($data, $totemId)
     {
-
         $existeEmail = Anuncio::where('email_contato', $data['email_contato'])->withTrashed()->exists();
-        if ($existeEmail) {
+        if ($existeEmail)
             return 403;
-        }
+
         $extensaoArquivo = $data['arquivo']->getClientOriginalExtension();
         $nome = Uuid::uuid6() . '.' . $extensaoArquivo;
         $data['arquivo']->storeAs('public/anuncios', $nome);
@@ -31,13 +30,11 @@ class AnuncioService
     public function update($data, $id)
     {
         $anuncio = Anuncio::find($id);
-
         if ($anuncio->email_contato != $data['email_contato']) {
             if ($this->existeEmail($data['email_contato'])) {
                 return 'EmailHasBeenTaken';
             }
         }
-
         $anuncio->fill($data->except('arquivo'));
         if ($arquivo = $data->hasFile('arquivo')) {
             $arquivo = $data->file('arquivo');
@@ -48,7 +45,6 @@ class AnuncioService
             $anuncio->arquivo = $nomeArquivo;
         }
         $anuncio->save();
-
         return $anuncio;
     }
 
@@ -60,11 +56,10 @@ class AnuncioService
     public function syncAnuncioTotem($data)
     {
         $anuncio = Anuncio::find($data['anuncio_id']);
-        if(!$anuncio) {
+        if (!$anuncio)
             return 403;
-        }
+
         $anuncio->totems()->sync($data['totem_id']);
         return $anuncio;
     }
 }
-
