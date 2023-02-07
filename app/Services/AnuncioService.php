@@ -14,8 +14,10 @@ class AnuncioService
         $nome = Uuid::uuid6() . '.' . $extensaoArquivo;
         $data['arquivo']->storeAs('public/anuncios', $nome);
         $data['arquivo'] = $nome;
-        $dataHoje = Carbon::now();
-        $data['data_comeco_campanha'] = $dataHoje;
+        if (isset($data['data_comeco_campanha']) && strlen($data['data_comeco_campanha']) == 0) {
+            $dataHoje = Carbon::now();
+            $data['data_comeco_campanha'] = $dataHoje;
+        }
         $anuncio = Anuncio::create($data);
         if ($totemId)
             $anuncio->totems()->sync($totemId);
