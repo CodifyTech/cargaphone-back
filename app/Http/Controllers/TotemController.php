@@ -126,13 +126,19 @@ class TotemController extends Controller
 
     public function pesquisarNome($nome)
     {
-        $totens = $this->totem->where('nome', 'like', '%' . $nome . '%')->paginate();
+        $totens = $this->totem->where('nome', 'like', '%' . $nome . '%')->with('estabelecimento')->paginate();
         return response()->json($totens);
     }
 
     public function pesquisarIdentificador($identificador)
     {
-        $totens = $this->totem->where('identificador', 'like', '%' . $identificador . '%')->paginate();
+        $totens = $this->totem->where('identificador', 'like', '%' . $identificador . '%')->with('estabelecimento')->paginate();
         return response()->json($totens);
+    }
+
+    public function totemComEstabelecimentos()
+    {
+        $totems = $this->totem->with('estabelecimento')->get();
+        return response()->json($totems);
     }
 }
