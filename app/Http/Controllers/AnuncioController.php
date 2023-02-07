@@ -66,7 +66,7 @@ class AnuncioController extends Controller
             throw new InternalServerErrorException();
         }
     }
-    
+
     /**
      * Sync ad to totem.
      *
@@ -103,7 +103,7 @@ class AnuncioController extends Controller
     {
         try {
             $anuncio = $this->anuncio->find($id);
-            if ($anuncio == '') {
+            if ($anuncio == null) {
                 return response()->json([
                     'except' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum anúncio',
@@ -149,7 +149,7 @@ class AnuncioController extends Controller
     {
         try {
             $anuncio = $this->anuncio->find($id);
-            if ($anuncio === '') {
+            if ($anuncio == null) {
                 return response()->json([
                     'except' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum anúncio',
