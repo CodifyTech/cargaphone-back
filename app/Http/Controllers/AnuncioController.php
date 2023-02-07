@@ -31,12 +31,6 @@ class AnuncioController extends Controller
     {
         try {
             $anuncios = $this->anuncio->paginate();
-            if ($anuncios === '') {
-                return response()->json([
-                    'except' => 'NotFoundException',
-                    'message' => 'Não foi encontrado nenhum anúncio',
-                ], 404);
-            }
             return response()->json($anuncios);
         } catch (\Exception) {
             throw new InternalServerErrorException();
@@ -78,7 +72,7 @@ class AnuncioController extends Controller
             if ($syncSuccess) {
                 return response()->json([
                     'message' => 'O anúncio foi vinculado ao totem com sucesso.'
-                ], 200);
+                ], 201);
             }
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
