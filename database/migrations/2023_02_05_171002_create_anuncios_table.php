@@ -25,7 +25,7 @@ return new class extends Migration
             $table->date('data_fim_campanha');
             $table->tinyInteger('tipo_campanha');
             $table->string('tel_contato_anunciante', 20);
-            $table->string('email_contato', 40)->unique();
+            $table->string('email_contato', 40);
             $table->softDeletes();
 
             $table->timestamps();

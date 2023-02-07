@@ -10,10 +10,6 @@ class AnuncioService
 {
     public function create($data, $totemId)
     {
-        $existeEmail = Anuncio::where('email_contato', $data['email_contato'])->withTrashed()->exists();
-        if ($existeEmail)
-            return 403;
-
         $extensaoArquivo = $data['arquivo']->getClientOriginalExtension();
         $nome = Uuid::uuid6() . '.' . $extensaoArquivo;
         $data['arquivo']->storeAs('public/anuncios', $nome);

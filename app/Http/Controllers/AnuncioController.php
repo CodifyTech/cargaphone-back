@@ -53,14 +53,7 @@ class AnuncioController extends Controller
     {
         try {
             $totemId = $request['totem_id'];
-
             $anuncio = $this->anuncioService->create($request->except('totem_id'), $totemId);
-            if ($anuncio === 403) {
-                return response()->json([
-                    'exception' => 'EmailHasBeenTaken',
-                    'message' => 'O e-mail informado já existe.'
-                ], 403);
-            }
             return response()->json($anuncio);
         } catch (\Exception) {
             throw new InternalServerErrorException();
