@@ -119,12 +119,6 @@ class AnuncioController extends Controller
     {
         try {
             $anuncio = $this->anuncioService->update($request, $id);
-            if ($anuncio == 'EmailHasBeenTaken') {
-                return response()->json([
-                    'exception' => 'EmailHasBeenTaken',
-                    'message' => 'O e-mail informado já existe.',
-                ], 403);
-            }
             return response()->json($anuncio);
         } catch (\Exception) {
             throw new InternalServerErrorException();

@@ -25,12 +25,6 @@ class AnuncioService
 
     public function update($data, $id)
     {
-        $anuncio = Anuncio::find($id);
-        if ($anuncio->email_contato != $data['email_contato']) {
-            if ($this->existeEmail($data['email_contato'])) {
-                return 'EmailHasBeenTaken';
-            }
-        }
         $anuncio->fill($data->except('arquivo'));
         if ($arquivo = $data->hasFile('arquivo')) {
             $arquivo = $data->file('arquivo');
