@@ -23,7 +23,8 @@ class Anuncio extends Model
         'tipo_campanha',
         'tel_contato_anunciante',
         'email_contato',
-        'totem_id'
+        'totem_id',
+        'tenant_id'
     ];
 
     protected function arquivo(): Attribute
@@ -36,6 +37,11 @@ class Anuncio extends Model
     public function totems()
     {
         return $this->belongsToMany(Totem::class);
+    }
+
+    public function unidade()
+    {
+        return $this->BelongsTo(Unidade::class);
     }
 
     public $incrementing = false;

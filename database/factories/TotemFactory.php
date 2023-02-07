@@ -22,6 +22,7 @@ class TotemFactory extends Factory
             'identificador' => 'T001',
             'descricao' => 'Totem escritório',
             'ativo' => 1,
+            'tenant_id' => 1,
             'estabelecimento_id' => function() {
                 return Estabelecimento::factory()->create()->id;
             }

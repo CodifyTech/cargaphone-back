@@ -23,6 +23,7 @@ class AnuncioFactory extends Factory
             'nome_anunciante' => 'Felipe Aires',
             'valor_anuncio_mensal' => 200,
             'data_comeco_campanha' => '2023-02-05',
+            'tenant_id' => 1,
             'data_fim_campanha' => '2023-12-31',
             'tipo_campanha' => 1,
             'tel_contato_anunciante' => '(99) 99999-9999',

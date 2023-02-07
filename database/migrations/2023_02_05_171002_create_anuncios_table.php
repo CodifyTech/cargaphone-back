@@ -17,6 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
 
             $table->string('nome', 60);
+            $table->unsignedBigInteger('tenant_id');
             $table->string('arquivo');
             $table->string('nome_anunciante', 60);
             $table->double('valor_anuncio_mensal');
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->tinyInteger('tipo_campanha');
             $table->string('tel_contato_anunciante', 20);
             $table->string('email_contato', 40);
+            $table->foreign('tenant_id')->references('id')->on('unidades');
             $table->softDeletes();
 
             $table->timestamps();

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\Estabelecimento;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class EstabelecimentoService
 {
@@ -11,6 +12,10 @@ class EstabelecimentoService
         if ($existeCnpj = Estabelecimento::whereCnpj($data['cnpj'])->exists()) {
             return 'DuplicateCNPJEntry';
         }
+        $token = $_SERVER['HTTP_AUTHORIZATION'];
+        $tokenFree = JWTAuth::parseToken($token)->getPayload();
+        $tenantId = $tokenFree['tenant_id'];
+        $data['tenant_id'] = $tenantId;
 
         $estabelecimento = Estabelecimento::create($data);
         return $estabelecimento;

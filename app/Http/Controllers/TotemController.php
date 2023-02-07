@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTotemRequest;
 use App\Http\Requests\UpdateTotemRequest;
 use App\Models\Totem;
+use App\Services\TotemService;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TotemController extends Controller
 {
@@ -15,7 +17,7 @@ class TotemController extends Controller
      *  Injection of dependency with construct
      * @param mixed
      */
-    public function __construct(private Totem $totem)
+    public function __construct(private Totem $totem, private TotemService $totemService)
     {
     }
 
@@ -44,7 +46,8 @@ class TotemController extends Controller
     public function store(CreateTotemRequest $request)
     {
         try {
-            $totem = $this->totem->create($request->validated());
+
+            $totem = $this->totemService->create($request->validated());
             return response()->json($totem);
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
