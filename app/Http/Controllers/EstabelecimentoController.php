@@ -51,7 +51,7 @@ class EstabelecimentoController extends Controller
                 return response()->json([
                     'Exception' => 'DuplicateCNPJException',
                     'message' => 'Já existe um estabelecimento com este CNPJ.'
-                ]);
+                ], 403);
             }
 
             return new EstabelecimentoResource($estabelecimento);
@@ -74,7 +74,7 @@ class EstabelecimentoController extends Controller
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum estabelecimento com este ID.'
-                ]);
+                ], 404);
             }
 
             return new EstabelecimentoResource($estabelecimento);
@@ -98,13 +98,13 @@ class EstabelecimentoController extends Controller
                 return response()->json([
                     'exception' => 'DuplicateCNPJException',
                     'message' => 'Já existe um estabelecimento com este CNPJ.'
-                ]);
+                ], 403);
             }
             if ($estabelecimento === 403) {
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum estabelecimento com este ID.'
-                ]);
+                ], 404);
             }
             return new EstabelecimentoResource($estabelecimento);
         } catch (\Exception $e) {
@@ -126,7 +126,7 @@ class EstabelecimentoController extends Controller
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum estabelecimento com este ID.'
-                ]);
+                ], 404);
 
             $estabelecimento->delete();
             return response()->json([
@@ -175,7 +175,7 @@ class EstabelecimentoController extends Controller
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
         }
-    }    
+    }
 
     public function pesquisarContato($contato)
     {
