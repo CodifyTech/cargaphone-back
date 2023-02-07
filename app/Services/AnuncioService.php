@@ -25,6 +25,7 @@ class AnuncioService
 
     public function update($data, $id)
     {
+        $anuncio = Anuncio::find($id);
         $anuncio->fill($data->except('arquivo'));
         if ($arquivo = $data->hasFile('arquivo')) {
             $arquivo = $data->file('arquivo');
