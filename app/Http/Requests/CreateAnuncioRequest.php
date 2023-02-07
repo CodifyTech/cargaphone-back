@@ -28,6 +28,7 @@ class CreateAnuncioRequest extends FormRequest
             'arquivo' => 'required',
             'nome_anunciante' => 'required',
             'valor_anuncio_mensal' => 'required',
+            'data_comeco_campanha' => 'sometimes',
             'data_fim_campanha' => 'required',
             'data_comeco_campanha' => 'sometimes',
             'tipo_campanha' => 'required',

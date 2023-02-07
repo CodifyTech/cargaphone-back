@@ -14,7 +14,7 @@ class AnuncioService
         $nome = Uuid::uuid6() . '.' . $extensaoArquivo;
         $data['arquivo']->storeAs('public/anuncios', $nome);
         $data['arquivo'] = $nome;
-        if (isset($data['data_comeco_campanha']) && strlen($data['data_comeco_campanha']) == 0) {
+        if (strlen($data['data_comeco_campanha']) === 0) {
             $dataHoje = Carbon::now();
             $data['data_comeco_campanha'] = $dataHoje;
         }

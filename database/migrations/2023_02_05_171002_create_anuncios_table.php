@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('nome_anunciante', 60);
             $table->double('valor_anuncio_mensal');
             $table->boolean('ativo')->default(1);
-            $table->date('data_comeco_campanha');
+            $table->date('data_comeco_campanha')->nullable();
             $table->date('data_fim_campanha');
             $table->tinyInteger('tipo_campanha');
             $table->string('tel_contato_anunciante', 20);
