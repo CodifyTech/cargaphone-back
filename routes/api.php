@@ -74,6 +74,7 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/{id}', [TotemController::class, 'destroy']);
         Route::get('/pesquisarpor/nome/{nome}', [TotemController::class, 'pesquisarNome']);
         Route::get('/pesquisarpor/identificador/{identificador}', [TotemController::class, 'pesquisarIdentificador']);
+        Route::get('/com/estabelecimento', [TotemController::class, 'totemComEstabelecimentos']);
     });
 
 
