@@ -28,8 +28,8 @@ class TotemController extends Controller
     public function index()
     {
         try {
-            $totems = $this->totem->paginate();
-            return response()->json($totems);
+            $totens = $this->totem->paginate();
+            return response()->json($totens);
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
         }

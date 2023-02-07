@@ -35,7 +35,7 @@ class AnuncioController extends Controller
                 return response()->json([
                     'except' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum anúncio',
-                ], 400);
+                ], 404);
             }
             return response()->json($anuncios);
         } catch (\Exception) {
@@ -52,8 +52,7 @@ class AnuncioController extends Controller
     public function store(CreateAnuncioRequest $request)
     {
         try {
-            $totemId = $request['totem_id'];
-            $anuncio = $this->anuncioService->create($request->except('totem_id'), $totemId);
+            $anuncio = $this->anuncioService->create($request->except('totem_id'), $request['totem_id']);
             return response()->json($anuncio);
         } catch (\Exception) {
             throw new InternalServerErrorException();
@@ -74,12 +73,12 @@ class AnuncioController extends Controller
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi possível encontrar nenhum anúncio com este ID.'
-                ], 400);
+                ], 404);
             }
             if ($syncSuccess) {
                 return response()->json([
                     'message' => 'O anúncio foi vinculado ao totem com sucesso.'
-                ]);
+                ], 200);
             }
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
@@ -100,7 +99,7 @@ class AnuncioController extends Controller
                 return response()->json([
                     'except' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum anúncio',
-                ], 400);
+                ], 404);
             }
 
             return response()->json($anuncio);
@@ -146,12 +145,12 @@ class AnuncioController extends Controller
                 return response()->json([
                     'except' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum anúncio',
-                ], 400);
+                ], 404);
             }
             $anuncio->delete();
             return response()->json([
                 'message' => 'Anúncio Excluído com sucesso'
-            ]);
+            ], 200);
         } catch (\Exception) {
             throw new InternalServerErrorException();
         }
