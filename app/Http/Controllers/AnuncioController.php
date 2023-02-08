@@ -63,7 +63,7 @@ class AnuncioController extends Controller
     {
         try {
             $syncSuccess = $this->anuncioService->syncAnuncioTotem($request->validated());
-            if ($syncSuccess === 403) {
+            if ($syncSuccess === 404) {
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi possível encontrar nenhum anúncio com este ID.'
