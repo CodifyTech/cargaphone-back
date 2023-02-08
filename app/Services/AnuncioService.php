@@ -34,8 +34,8 @@ class AnuncioService
     {
         $anuncio = Anuncio::find($id);
         if($anuncio == null)
-            return 404;
-        
+            return '404';
+
         $anuncio->fill($data->except('arquivo'));
         if ($arquivo = $data->hasFile('arquivo')) {
             $arquivo = $data->file('arquivo');

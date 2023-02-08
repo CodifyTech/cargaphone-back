@@ -25,10 +25,11 @@ class UpdateAnuncioRequest extends FormRequest
     {
         return [
             'nome' => 'required',
-            'arquivo' => 'required',
+            'arquivo' => 'sometimes',
             'nome_anunciante' => 'required',
             'valor_anuncio_mensal' => 'required',
             'data_fim_campanha' => 'required',
+            'ativo' => 'sometimes',
             'data_comeco_campanha' => 'sometimes',
             'tipo_campanha' => 'required',
             'tel_contato_anunciante' => 'required',

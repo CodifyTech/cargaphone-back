@@ -21,6 +21,7 @@ class Anuncio extends Model
         'data_comeco_campanha',
         'data_fim_campanha',
         'tipo_campanha',
+        'ativo',
         'tel_contato_anunciante',
         'email_contato',
         'totem_id',

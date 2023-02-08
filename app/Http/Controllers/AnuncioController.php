@@ -113,7 +113,7 @@ class AnuncioController extends Controller
     {
         try {
             $anuncio = $this->anuncioService->update($request, $id);
-            if ($anuncio == 404) {
+            if ($anuncio == '404') {
                 return response()->json([
                     'except' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum anúncio com este ID',
