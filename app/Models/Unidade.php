@@ -32,4 +32,14 @@ class Unidade extends Model
     {
         return $this->hasMany(Estabelecimento::class);
     }
+
+    public function totens()
+    {
+        return $this->hasMany(Totem::class);
+    }
+
+    public function anuncios()
+    {
+        return $this->hasMany(Anuncio::class);
+    }
 }

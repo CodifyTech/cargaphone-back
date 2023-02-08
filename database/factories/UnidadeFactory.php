@@ -18,11 +18,11 @@ class UnidadeFactory extends Factory
     {
         return [
             'id' => 1,
-            'nome' => 'Unidade 1',
+            'nome' => 'Matriz',
             'cnpj_empresa' => '65.465.454/6469-46',
             'nome_responsavel' => 'Felipe Aires',
             'dt_abertura' => '2010-10-10',
-            'nome_rua' => 'Rua Teste',
+            'nome_rua' => 'Rua Fictícia',
             'numero' => 133,
             'cep' => 12312123,
             'cidade' => 'São Paulo',

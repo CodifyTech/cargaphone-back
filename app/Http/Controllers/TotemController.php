@@ -7,7 +7,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTotemRequest;
 use App\Http\Requests\UpdateTotemRequest;
 use App\Models\Totem;
+use App\Services\TotemService;
 use Illuminate\Http\Request;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TotemController extends Controller
 {
@@ -15,7 +17,7 @@ class TotemController extends Controller
      *  Injection of dependency with construct
      * @param mixed
      */
-    public function __construct(private Totem $totem)
+    public function __construct(private Totem $totem, private TotemService $totemService)
     {
     }
 
@@ -28,15 +30,8 @@ class TotemController extends Controller
     public function index()
     {
         try {
-            $totems = $this->totem->paginate();
-            if ($totems == '') {
-                return response()->json([
-                    'exception' => 'NotFoundException',
-                    'message' => 'Não foi possível encontrar nenhum totem.'
-                ], 404);
-            }
-
-            return response()->json($totems);
+            $totens = $this->totem->paginate();
+            return response()->json($totens);
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
         }
@@ -51,7 +46,8 @@ class TotemController extends Controller
     public function store(CreateTotemRequest $request)
     {
         try {
-            $totem = $this->totem->create($request->validated());
+
+            $totem = $this->totemService->create($request->validated());
             return response()->json($totem);
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
@@ -72,7 +68,7 @@ class TotemController extends Controller
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum totem com este ID.'
-                ]);
+                ], 404);
             }
             return response()->json($totem);
         } catch (\Exception) {
@@ -95,7 +91,7 @@ class TotemController extends Controller
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi possível encontrar um totem com este ID'
-                ]);
+                ], 404);
             }
             $totem->update($request->validated());
             return response()->json([
@@ -120,7 +116,7 @@ class TotemController extends Controller
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum totem com este ID.'
-                ]);
+                ], 404);
             }
             $totem->delete();
             return response()->json([
@@ -133,13 +129,19 @@ class TotemController extends Controller
 
     public function pesquisarNome($nome)
     {
-        $totens = $this->totem->where('nome', 'like', '%' . $nome . '%')->paginate();
+        $totens = $this->totem->where('nome', 'like', '%' . $nome . '%')->with('estabelecimento')->paginate();
         return response()->json($totens);
     }
 
     public function pesquisarIdentificador($identificador)
     {
-        $totens = $this->totem->where('identificador', 'like', '%' . $identificador . '%')->paginate();
+        $totens = $this->totem->where('identificador', 'like', '%' . $identificador . '%')->with('estabelecimento')->paginate();
         return response()->json($totens);
+    }
+
+    public function totemComEstabelecimentos()
+    {
+        $totems = $this->totem->with('estabelecimento')->get();
+        return response()->json($totems);
     }
 }

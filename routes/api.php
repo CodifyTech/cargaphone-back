@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AuthController, EstabelecimentoController, TotemController, UnidadeController, UserController};
+use App\Http\Controllers\{AnuncioController, AuthController, EstabelecimentoController, TotemController, UnidadeController, UserController};
 use Illuminate\Support\Facades\Route;
 
 Route::post('auth/login', [AuthController::class, 'login']);
@@ -74,6 +74,21 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/{id}', [TotemController::class, 'destroy']);
         Route::get('/pesquisarpor/nome/{nome}', [TotemController::class, 'pesquisarNome']);
         Route::get('/pesquisarpor/identificador/{identificador}', [TotemController::class, 'pesquisarIdentificador']);
+        Route::get('/com/estabelecimento', [TotemController::class, 'totemComEstabelecimentos']);
+    });
+
+
+    Route::prefix('anuncio')->group(function () {
+        Route::get('', [AnuncioController::class, 'index']);
+        Route::post('', [AnuncioController::class, 'store']);
+        Route::get('/{id}', [AnuncioController::class, 'show']);
+        Route::put('/{id}', [AnuncioController::class, 'update']);
+        Route::post('/vincular/anuncio/totem', [AnuncioController::class, 'vincularAnuncioTotem']);
+        Route::delete('/{id}', [AnuncioController::class, 'destroy']);
+        Route::get('/pesquisarpor/nome/{nome}', [AnuncioController::class, 'pesquisarNome']);
+        Route::get('/pesquisarpor/telefone/{telefone}', [AnuncioController::class, 'pesquisarTelContato']);
+        Route::get('/pesquisarpor/email/{email}', [AnuncioController::class, 'pesquisarEmailContato']);
+        Route::get('/pesquisarpor/nome_anunciante/{nomeAnunciante}', [AnuncioController::class, 'pesquisarNomeAnunciante']);
     });
 
 

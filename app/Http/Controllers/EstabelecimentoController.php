@@ -51,7 +51,7 @@ class EstabelecimentoController extends Controller
                 return response()->json([
                     'Exception' => 'DuplicateCNPJException',
                     'message' => 'Já existe um estabelecimento com este CNPJ.'
-                ], 403);
+                ], 404);
             }
 
             return new EstabelecimentoResource($estabelecimento);
@@ -93,14 +93,14 @@ class EstabelecimentoController extends Controller
     public function update(UpdateEstabelecimentoRequest $request, $id)
     {
         try {
-            $estabelecimento = $this->estabelecimentoService->updateEstablishment($request->validated(), $id);
+            $estabelecimento = $this->estabelecimentoService->update($request->validated(), $id);
             if ($estabelecimento === 'DuplicateCNPJException') {
                 return response()->json([
                     'exception' => 'DuplicateCNPJException',
                     'message' => 'Já existe um estabelecimento com este CNPJ.'
-                ], 403);
+                ], 404);
             }
-            if ($estabelecimento === 403) {
+            if ($estabelecimento === 404) {
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum estabelecimento com este ID.'
@@ -122,7 +122,7 @@ class EstabelecimentoController extends Controller
     {
         try {
             $estabelecimento = $this->estabelecimento->find($id);
-            if (!$estabelecimento)
+            if ($estabelecimento == null)
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum estabelecimento com este ID.'

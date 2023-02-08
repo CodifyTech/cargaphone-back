@@ -37,12 +37,15 @@ class UserService
 
             $request['password'] = $userPassword;
 
-            $token = $_SERVER['HTTP_AUTHORIZATION'];
-            $tokenFree = JWTAuth::parseToken($token)->getPayload();
-            $tenantId = $tokenFree['tenant_id'];
-            $request['tenant_id'] = $tenantId;
+            if (strlen($request['tenant_id']) == 0) {
+                $token = $_SERVER['HTTP_AUTHORIZATION'];
+                $tokenFree = JWTAuth::parseToken($token)->getPayload();
+                $tenantId = $tokenFree['tenant_id'];
+                $request['tenant_id'] = $tenantId;
+            }
 
             $user = User::create($request);
+
             //event(new UserRegistered($user));
 
             return $user;

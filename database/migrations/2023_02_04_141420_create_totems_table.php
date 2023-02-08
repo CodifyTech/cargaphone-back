@@ -19,11 +19,13 @@ return new class extends Migration
             $table->string('identificador', 40);
             $table->string('descricao', 100);
             $table->boolean('ativo')->default(1);
+            $table->unsignedBigInteger('tenant_id');
 
             $table->string('estabelecimento_id')->nullable();
             $table->foreign('estabelecimento_id')->references('id')->on('estabelecimentos');
             $table->softDeletes();
             $table->timestamps();
+            $table->foreign('tenant_id')->references('id')->on('unidades');
         });
     }
 

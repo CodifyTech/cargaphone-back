@@ -17,7 +17,8 @@ class Totem extends Model
         'descricao',
         'identificador',
         'ativo',
-        'estabelecimento_id'
+        'estabelecimento_id',
+        'tenant_id'
     ];
 
     public $incrementing = false;
@@ -27,5 +28,15 @@ class Totem extends Model
     public function estabelecimento()
     {
         return $this->belongsTo(Estabelecimento::class);
+    }
+
+    public function anuncios()
+    {
+        return $this->belongsToMany(Anuncio::class);
+    }
+
+    public function unidade()
+    {
+        return $this->belongsTo(Unidade::class);
     }
 }

@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTotemRequest extends FormRequest
+class SyncAnuncioTotemRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,11 +24,8 @@ class UpdateTotemRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome' => 'required',
-            'identificador' => 'required',
-            'descricao' => 'required',
-            'estabelecimento_id' => 'required',
-            'ativo' => 'required'
+            'totem_id' => 'required',
+            'anuncio_id' => 'required',
         ];
     }
 }
