@@ -41,7 +41,7 @@ class RegisterUserRequest extends FormRequest
             'cidade' => 'sometimes',
             'bairro' => 'sometimes',
             'estado' => 'sometimes',
-            'tenant_id' => 'sometimes',
+            'tenant_id' => 'required',
         ];
     }
 }

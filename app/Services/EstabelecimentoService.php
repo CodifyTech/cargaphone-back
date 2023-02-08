@@ -9,9 +9,10 @@ class EstabelecimentoService
 {
     public function create(array $data)
     {
-        if ($existeCnpj = Estabelecimento::whereCnpj($data['cnpj'])->exists()) {
+        if (Estabelecimento::whereCnpj($data['cnpj'])->exists()) {
             return 'DuplicateCNPJEntry';
         }
+
         $token = $_SERVER['HTTP_AUTHORIZATION'];
         $tokenFree = JWTAuth::parseToken($token)->getPayload();
         $tenantId = $tokenFree['tenant_id'];
@@ -21,12 +22,12 @@ class EstabelecimentoService
         return $estabelecimento;
     }
 
-    public function updateEstablishment(array $data, string $id)
+    public function update(array $data, string $id)
     {
         $estabelecimento = Estabelecimento::find($id);
 
         if (!$estabelecimento) {
-            return 403;
+            return 404;
         }
 
         if (isset($data['cnpj'])) {

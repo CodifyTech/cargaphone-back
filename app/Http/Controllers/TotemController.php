@@ -68,7 +68,7 @@ class TotemController extends Controller
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum totem com este ID.'
-                ]);
+                ], 404);
             }
             return response()->json($totem);
         } catch (\Exception) {
@@ -91,7 +91,7 @@ class TotemController extends Controller
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi possível encontrar um totem com este ID'
-                ]);
+                ], 404);
             }
             $totem->update($request->validated());
             return response()->json([
@@ -116,7 +116,7 @@ class TotemController extends Controller
                 return response()->json([
                     'exception' => 'NotFoundException',
                     'message' => 'Não foi encontrado nenhum totem com este ID.'
-                ]);
+                ], 404);
             }
             $totem->delete();
             return response()->json([

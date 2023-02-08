@@ -28,7 +28,7 @@ class UpdateTotemRequest extends FormRequest
             'identificador' => 'required',
             'descricao' => 'required',
             'estabelecimento_id' => 'required',
-            'ativo' => 'sometimes'
+            'ativo' => 'required'
         ];
     }
 }

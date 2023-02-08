@@ -47,7 +47,7 @@ class AnuncioController extends Controller
     {
         try {
             $anuncio = $this->anuncioService->create($request->except('totem_id'), $request['totem_id']);
-            return response()->json($anuncio);
+            return response()->json($anuncio, 201);
         } catch (\Exception) {
             throw new InternalServerErrorException();
         }
@@ -92,7 +92,7 @@ class AnuncioController extends Controller
             if ($anuncio == null) {
                 return response()->json([
                     'except' => 'NotFoundException',
-                    'message' => 'Não foi encontrado nenhum anúncio',
+                    'message' => 'Não foi encontrado nenhum anúncio com este ID',
                 ], 404);
             }
 
@@ -113,6 +113,12 @@ class AnuncioController extends Controller
     {
         try {
             $anuncio = $this->anuncioService->update($request, $id);
+            if ($anuncio == 404) {
+                return response()->json([
+                    'except' => 'NotFoundException',
+                    'message' => 'Não foi encontrado nenhum anúncio com este ID',
+                ], 404);
+            }
             return response()->json($anuncio);
         } catch (\Exception) {
             throw new InternalServerErrorException();

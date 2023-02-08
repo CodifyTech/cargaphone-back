@@ -33,6 +33,9 @@ class AnuncioService
     public function update($data, $id)
     {
         $anuncio = Anuncio::find($id);
+        if($anuncio == null)
+            return 404;
+        
         $anuncio->fill($data->except('arquivo'));
         if ($arquivo = $data->hasFile('arquivo')) {
             $arquivo = $data->file('arquivo');
@@ -55,7 +58,7 @@ class AnuncioService
     {
         $anuncio = Anuncio::find($data['anuncio_id']);
         if (!$anuncio)
-            return 403;
+            return 404;
 
         $anuncio->totems()->sync($data['totem_id']);
         return $anuncio;
