@@ -51,7 +51,7 @@ class EstabelecimentoController extends Controller
                 return response()->json([
                     'Exception' => 'DuplicateCNPJException',
                     'message' => 'Já existe um estabelecimento com este CNPJ.'
-                ], 404);
+                ], 403);
             }
 
             return new EstabelecimentoResource($estabelecimento);
@@ -98,7 +98,7 @@ class EstabelecimentoController extends Controller
                 return response()->json([
                     'exception' => 'DuplicateCNPJException',
                     'message' => 'Já existe um estabelecimento com este CNPJ.'
-                ], 404);
+                ], 403);
             }
             if ($estabelecimento === 404) {
                 return response()->json([
