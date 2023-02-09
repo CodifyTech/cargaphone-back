@@ -18,30 +18,32 @@ class AuthService
             $user = User::where('email', $credentials['email'])->first();
             if ($user) {
                 if ($user->perfil == 1) {
-                    $token = auth()->claims([
+                    $tokenJwt = auth()->claims([
                         'name' => $user->name,
-                        'abilities' => [
-                            'all' => 'create, read, update, delete'                            //     // $user->perfil == 1 ? 'create', 'read', 'update', 'delete' :
-                        ],
                         'role_id' => $user->perfil,
                         'tenant_id' => $user->tenant_id
                     ])->attempt($credentials);
+                    $abilities = [
+                        'all' => 'create, read, update, delete',
+                    ];
                 }
                 if ($user->perfil == 2) {
-                    $token = auth()->claims([
+                    $tokenJwt = auth()->claims([
                         'name' => $user->name,
-                        'abilites' => [
-                            'anuncios' => 'create, read, update, delete',
-                            'estebelecimentos' => 'create, read, update, delete',
-                        ],
                         'role_id' => $user->perfil,
                         'tenant_id' => $user->tenant_id
                     ])->attempt($credentials);
+                    $abilities = [
+                        'estabelecimentos' => 'create, read, update, delete',
+                        'anuncios' => 'create, read, update, delete',
+                    ];
                 }
 
-                if (!$token) return 'LoginInvalidException';
+                if (!$tokenJwt) return 'LoginInvalidException';
+
                 return [
-                    'token' => $token,
+                    'token' => $tokenJwt,
+                    'abilities' => $abilities,
                 ];
             }
         } catch (\Exception $e) {

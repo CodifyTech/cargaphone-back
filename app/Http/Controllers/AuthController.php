@@ -31,10 +31,7 @@ class AuthController extends Controller
                 'message' => 'E-mail e/ou senha incorretos.'
             ], 401);
         }
-        return (new UserResource(auth()->user()))->additional([
-            'sal' => '123',
-           'token' => $token
-        ]);
+        return (new UserResource(auth()->user()))->additional($token);
     }
 
     public function verifyEmail(VerifyEmailRequest $request)
