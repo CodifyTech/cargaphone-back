@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateUnidadeRequest;
 use App\Http\Requests\UpdateUnidadeRequest;
 use App\Models\Unidade;
+use App\Services\UnidadeService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 
 class UnidadeController extends Controller
@@ -15,7 +17,7 @@ class UnidadeController extends Controller
      *  Injection of dependency with construct
      * @param mixed
      */
-    public function __construct(private Unidade $unidade)
+    public function __construct(private Unidade $unidade, private UnidadeService $unidadeService)
     {
     }
 
@@ -28,9 +30,17 @@ class UnidadeController extends Controller
     public function index()
     {
         try {
+            $this->authorize('viewAny', User::class);
+
             $unidades = $this->unidade->paginate();
             return response()->json($unidades, 200);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -44,10 +54,23 @@ class UnidadeController extends Controller
     public function store(CreateUnidadeRequest $request)
     {
         try {
-            $input = $request->validated();
-            $unidade = $this->unidade->create($input);
+            $this->authorize('create', User::class);
+
+            $unidade = $this->unidadeService->create($request->validated());
+            if($unidade == 'DuplicateCNPJEntry') {
+                return response()->json([
+                    'Exception' => 'DuplicateCNPJException',
+                    'message' => 'Já existe uma unidade franqueada com este CNPJ.'
+                ], 403);
+            }
             return response()->json($unidade, 201);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -61,6 +84,8 @@ class UnidadeController extends Controller
     public function show($id)
     {
         try {
+            $this->authorize('view', User::class);
+
             $unidade = $this->unidade->find($id);
             if ($unidade == null) {
                 return response()->json([
@@ -69,6 +94,12 @@ class UnidadeController extends Controller
             }
             return response()->json($unidade, 200);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -83,16 +114,29 @@ class UnidadeController extends Controller
     public function update(UpdateUnidadeRequest $request, $id)
     {
         try {
-            $input = $request->validated();
-            $unidade = $this->unidade->find($id);
-            if ($unidade == null) {
+            $this->authorize('update', User::class);
+
+            $unidade = $this->unidadeService->update($request->validated(), $id);
+            if($unidade == 'NotFoundException') {
                 return response()->json([
-                    'message' => 'Não foi encontrado nenhuma unidade.'
+                    'exception' => 'NotFoundException',
+                    'message' => 'Não foi encontrado nenhuma unidade com este ID.'
                 ], 404);
             }
-            $unidade->update($input);
+            if ($unidade == 'DuplicateCNPJEntry') {
+                return response()->json([
+                    'Exception' => 'DuplicateCNPJException',
+                    'message' => 'Já existe uma unidade franqueada com este CNPJ.'
+                ], 403);
+            }
             return response()->json($unidade);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -106,6 +150,8 @@ class UnidadeController extends Controller
     public function destroy($id)
     {
         try {
+            $this->authorize('delete', User::class);
+
             $unidade = $this->unidade->find($id);
             if ($unidade == null) {
                 return response()->json([
@@ -116,17 +162,30 @@ class UnidadeController extends Controller
             return response()->json([
                 'message' => 'Excluido com sucesso'
             ]);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
-    }  
+    }
 
     public function pesquisarNome($nome)
     {
         try {
+            $this->authorize('viewAny', User::class);
             $unidade = Unidade::where('nome', 'like', '%' .  $nome . '%')->paginate();
             return response()->json($unidade);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -134,9 +193,16 @@ class UnidadeController extends Controller
     public function pesquisarCnpj($cnpj)
     {
         try {
+            $this->authorize('viewAny', User::class);
             $unidade = Unidade::where('cnpj_empresa', 'like', '%' .  $cnpj . '%')->paginate();
             return response()->json($unidade);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -144,9 +210,16 @@ class UnidadeController extends Controller
     public function pesquisarResponsavel($responsavel)
     {
         try {
+            $this->authorize('viewAny', User::class);
             $unidade = Unidade::where('nome_responsavel', 'like', '%' .  $responsavel . '%')->paginate();
             return response()->json($unidade);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -154,9 +227,16 @@ class UnidadeController extends Controller
     public function pesquisarCidade($cidade)
     {
         try {
+            $this->authorize('viewAny', User::class);
             $unidade = Unidade::where('cidade', 'like', '%' .  $cidade . '%')->paginate();
             return response()->json($unidade);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -164,9 +244,16 @@ class UnidadeController extends Controller
     public function pesquisarEstado($estado)
     {
         try {
+            $this->authorize('viewAny', User::class);
             $unidade = Unidade::where('estado', 'like', '%' .  $estado . '%')->paginate();
             return response()->json($unidade);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }

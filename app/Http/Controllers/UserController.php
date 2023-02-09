@@ -11,6 +11,7 @@ use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Services\UserService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -33,9 +34,16 @@ class UserController extends Controller
     public function index()
     {
         try {
+            $this->authorize('viewAny', User::class);
             $users = User::select()->paginate();
             return response()->json($users, 200);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -48,20 +56,31 @@ class UserController extends Controller
      */
     public function registerUser(RegisterUserRequest $request)
     {
-        $user = $this->userService->registerUser($request->validated());
-        if ($user == '403') {
-            return response()->json([
-                'exception' => 'EmailHasBeenTaken',
-                'message' => 'Este e-mail já existe. Você não está autorizado a criar um usuário.',
-            ], 403);
+        try {
+            $this->authorize('create', User::class);
+            $user = $this->userService->registerUser($request->validated());
+            if ($user == '403') {
+                return response()->json([
+                    'exception' => 'EmailHasBeenTaken',
+                    'message' => 'Este e-mail já existe. Você não está autorizado a criar um usuário.',
+                ], 403);
+            }
+            if ($user == 'CpfHasBeenTaken') {
+                return response()->json([
+                    'exception' => 'CpfHasBeenTaken',
+                    'message' => 'Já existe uma pessoa com este CPF.',
+                ], 403);
+            }
+            return $user;
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
+            throw new InternalServerErrorException();
         }
-        if ($user == 'CpfHasBeenTaken') {
-            return response()->json([
-                'exception' => 'CpfHasBeenTaken',
-                'message' => 'Já existe uma pessoa com este CPF.',
-            ], 403);
-        }
-        return $user;
     }
 
     /**
@@ -73,9 +92,23 @@ class UserController extends Controller
     public function show($id)
     {
         try {
+
+            $this->authorize('view', User::class);
             $user = User::find($id);
+            if(empty($user)) {
+                return response()->json([
+                    'exception' => 'NotFoundException',
+                    'message' => 'Não foi encontrado nenhum usuário com este ID.'
+                ], 404);
+            }
             return response()->json($user);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -89,24 +122,37 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, $id)
     {
-        $user = $this->userService->updateUser($request, $id);
-        if ($user == '403') {
-            return response()->json([
-                'exception' => 'EmailHasBeenTaken',
-                'message' => 'Este e-mail já existe. Você não está autorizado a criar um usuário.',
-            ], 403);
-        }
-        if ($user == 'CpfHasBeenTaken') {
-            return response()->json([
-                'exception' => 'CpfHasBeenTaken',
-                'message' => 'Já existe uma pessoa com este CPF.',
-            ], 403);
-        }
-        if ($user == 'EmailHasBeenTaken') {
-            return response()->json([
-                'exception' => 'EmailHasBeenTaken',
-                'message' => 'Já existe uma pessoa com este e-mail.',
-            ], 403);
+        try {
+            $this->authorize('update', User::class);
+
+            $user = $this->userService->updateUser($request, $id);
+            if ($user == '404') {
+                return response()->json([
+                    'exception' => 'NotFoundException',
+                    'message' => 'Não foi encontrado nenhum usuário com este ID.',
+                ], 404);
+            }
+            if ($user == 'CpfHasBeenTaken') {
+                return response()->json([
+                    'exception' => 'CpfHasBeenTaken',
+                    'message' => 'Já existe uma pessoa com este CPF.',
+                ], 403);
+            }
+
+            if ($user == 'EmailHasBeenTaken') {
+                return response()->json([
+                    'exception' => 'EmailHasBeenTaken',
+                    'message' => 'Já existe uma pessoa com este e-mail.',
+                ], 403);
+            }
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
+            throw new InternalServerErrorException();
         }
         return new UserResource($user);
     }
@@ -120,9 +166,19 @@ class UserController extends Controller
     public function destroy($id)
     {
         try {
+            $this->authorize('destroy', User::class);
             $user = User::find($id);
             $user->delete();
+            return response()->json([
+                'message' => 'Usuário Excluído com Sucesso.'
+            ], 200);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new ErrorDeletingException();
         }
     }
@@ -139,9 +195,16 @@ class UserController extends Controller
     public function pesquisarNome($nome)
     {
         try {
+
             $users = User::where('name', 'like', '%' .  $nome . '%')->paginate();
             return response()->json($users);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -152,6 +215,12 @@ class UserController extends Controller
             $users = User::where('cpf_usuario', 'like', '%' .  $cpf . '%')->paginate();
             return response()->json($users);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -162,6 +231,12 @@ class UserController extends Controller
             $users = User::where('rg_usuario', 'like', '%' .  $rg . '%')->paginate();
             return response()->json($users);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -172,6 +247,12 @@ class UserController extends Controller
             $users = User::where('email', 'like', '%' .  $email . '%')->paginate();
             return response()->json($users);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -182,6 +263,12 @@ class UserController extends Controller
             $users = User::where('cidade', 'like', '%' .  $cidade . '%')->paginate();
             return response()->json($users);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }

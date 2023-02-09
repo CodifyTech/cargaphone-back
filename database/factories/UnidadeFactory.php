@@ -19,7 +19,7 @@ class UnidadeFactory extends Factory
         return [
             'id' => 1,
             'nome' => 'Matriz',
-            'cnpj_empresa' => '65.465.454/6469-46',
+            'cnpj_empresa' => '65465454646946',
             'nome_responsavel' => 'Felipe Aires',
             'dt_abertura' => '2010-10-10',
             'nome_rua' => 'Rua Fictícia',
