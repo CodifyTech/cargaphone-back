@@ -196,4 +196,13 @@ class EstabelecimentoController extends Controller
             throw new InternalServerErrorException();
         }
     }
+    public function pesquisarSegmentacao($segmentacao)
+    {
+        try {
+            $Estabelecimento = Estabelecimento::where('segmentacao', 'like', '%' .  $segmentacao . '%')->paginate();
+            return response()->json($Estabelecimento);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }
 }

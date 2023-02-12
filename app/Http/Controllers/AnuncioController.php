@@ -11,6 +11,7 @@ use App\Models\Anuncio;
 use App\Services\AnuncioService;
 use Illuminate\Http\Request;
 
+
 class AnuncioController extends Controller
 {
     /**
@@ -185,6 +186,26 @@ class AnuncioController extends Controller
         try {
             $anuncios = Anuncio::where('nome_anunciante', 'like', '%' .  $nomeAnunciante . '%')->paginate();
             return response()->json($anuncios);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    public function anunciosAtivos(){
+        try{
+            $anuncios = $this->anuncio->where('ativo',1)->get();        
+            return response()->json(count($anuncios));
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+
+    }
+
+    public function anunciosFaturamento(){
+        try{
+            $faturamento = $this->anuncio->select('valor_anuncio_mensal')->sum('valor_anuncio_mensal');   
+            $faturamentoFormatado = number_format($faturamento,2,',','.');        
+            return response()->json($faturamentoFormatado);            
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
         }

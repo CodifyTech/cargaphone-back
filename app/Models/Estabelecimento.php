@@ -23,6 +23,7 @@ class Estabelecimento extends Model
         'cidade',
         'complemento',
         'estado',
+        'segmentacao',
         'tenant_id'
     ];
 

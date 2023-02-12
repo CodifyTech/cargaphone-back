@@ -34,6 +34,7 @@ class CreateEstabelecimentoRequest extends FormRequest
             'cidade' => 'required',
             'complemento' => 'sometimes',
             'estado' => 'required',
+            'segmentacao' => 'required',
             'tenant_id' => 'required'
         ];
     }

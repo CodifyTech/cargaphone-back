@@ -64,6 +64,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('pesquisarpor/cidade/{cidade}', [EstabelecimentoController::class, 'pesquisarCidade']);
         Route::get('pesquisarpor/contato/{contato}', [EstabelecimentoController::class, 'pesquisarContato']);
         Route::get('pesquisarpor/cep/{cep}', [EstabelecimentoController::class, 'pesquisarCep']);
+        Route::get('pesquisarpor/segmentacao/{segmentacao}', [EstabelecimentoController::class, 'pesquisarSegmentacao']);
     });
 
     Route::prefix('totem')->group(function () {
@@ -75,6 +76,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/pesquisarpor/nome/{nome}', [TotemController::class, 'pesquisarNome']);
         Route::get('/pesquisarpor/identificador/{identificador}', [TotemController::class, 'pesquisarIdentificador']);
         Route::get('/com/estabelecimento', [TotemController::class, 'totemComEstabelecimentos']);
+        Route::get('/status/ativo', [TotemController::class, 'TotensAtivos']);
+        
     });
 
 
@@ -89,6 +92,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/pesquisarpor/telefone/{telefone}', [AnuncioController::class, 'pesquisarTelContato']);
         Route::get('/pesquisarpor/email/{email}', [AnuncioController::class, 'pesquisarEmailContato']);
         Route::get('/pesquisarpor/nome_anunciante/{nomeAnunciante}', [AnuncioController::class, 'pesquisarNomeAnunciante']);
+        Route::get('/status/ativo', [AnuncioController::class, 'anunciosAtivos']);
+        Route::get('/total/faturamento', [AnuncioController::class, 'anunciosFaturamento']);
     });
 
 
