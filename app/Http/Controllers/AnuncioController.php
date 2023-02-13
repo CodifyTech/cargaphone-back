@@ -190,24 +190,4 @@ class AnuncioController extends Controller
             throw new InternalServerErrorException();
         }
     }
-
-    public function anunciosAtivos(){
-        try{
-            $anuncios = $this->anuncio->where('ativo',1)->get();        
-            return response()->json(count($anuncios));
-        } catch (\Exception $e) {
-            throw new InternalServerErrorException();
-        }
-
-    }
-
-    public function anunciosFaturamento(){
-        try{
-            $faturamento = $this->anuncio->select('valor_anuncio_mensal')->sum('valor_anuncio_mensal');   
-            $faturamentoFormatado = number_format($faturamento,2,',','.');        
-            return response()->json($faturamentoFormatado);            
-        } catch (\Exception $e) {
-            throw new InternalServerErrorException();
-        }
-    }
 }

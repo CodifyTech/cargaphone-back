@@ -144,10 +144,4 @@ class TotemController extends Controller
         $totems = $this->totem->with('estabelecimento')->get();
         return response()->json($totems);
     }
-
-    public function TotensAtivos(){
-        $totems = $this->totem->where('ativo',1)->get();        
-        return response()->json(count($totems));
-    }
-
 }
