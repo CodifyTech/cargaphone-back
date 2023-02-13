@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('anuncios_totens');
+        Schema::dropIfExists('anuncio_totem');
     }
 };

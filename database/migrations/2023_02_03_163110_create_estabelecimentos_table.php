@@ -20,7 +20,7 @@ return new class extends Migration
             $table->unsignedBigInteger('tenant_id');
             $table->string('razao_social', 40);
             $table->string('cnpj', 25)->unique();
-            $table->tinyInteger('segmentacao', 1);
+            $table->tinyInteger('segmentacao');
             $table->string('responsavel', 60);
             $table->string('contato_responsavel', 35);
 

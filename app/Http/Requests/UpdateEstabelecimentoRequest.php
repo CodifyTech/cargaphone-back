@@ -28,6 +28,7 @@ class UpdateEstabelecimentoRequest extends FormRequest
             'razao_social' => 'required',
             'cnpj' => 'required',
             'responsavel' => 'required',
+            'segmentacao' => 'required',
             'contato_responsavel' => 'required',
             'cep' => 'required',
             'endereco' => 'required',

@@ -250,8 +250,9 @@ class AnuncioController extends Controller
     {
         try {
             $faturamento = $this->anuncioService->faturamento();
+            $valor = number_format($faturamento, 2, ',', '.');
             return response()->json([
-                'faturamento' => $faturamento
+                'faturamento' => $valor
             ]);
         } catch (\Exception) {
             throw new InternalServerErrorException();

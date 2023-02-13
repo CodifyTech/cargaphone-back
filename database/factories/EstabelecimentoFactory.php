@@ -27,7 +27,8 @@ class EstabelecimentoFactory extends Factory
             'cep' => '04909004',
             'endereco' => 'Rua Fictícia Exemplo',
             'cidade' => 'Cidade Exemplo',
-            'estado' => 'SP'
+            'estado' => 'SP',
+            'segmentacao' => 1
         ];
     }
 }
