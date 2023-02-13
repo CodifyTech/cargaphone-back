@@ -33,16 +33,7 @@ class UserService
             $arquivo = $request['foto_perfil']->storeAs('public/foto_perfil', $nome);
             $request['foto_perfil'] = $nome;
         }
-
         $request['password'] = $userPassword;
-
-        if (strlen($request['tenant_id']) == 0) {
-            $token = $_SERVER['HTTP_AUTHORIZATION'];
-            $tokenFree = JWTAuth::parseToken($token)->getPayload();
-            $tenantId = $tokenFree['tenant_id'];
-            $request['tenant_id'] = $tenantId;
-        }
-
         $user = User::create($request);
 
         //event(new UserRegistered($user));

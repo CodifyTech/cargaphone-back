@@ -65,6 +65,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('pesquisarpor/cidade/{cidade}', [EstabelecimentoController::class, 'pesquisarCidade']);
         Route::get('pesquisarpor/contato/{contato}', [EstabelecimentoController::class, 'pesquisarContato']);
         Route::get('pesquisarpor/cep/{cep}', [EstabelecimentoController::class, 'pesquisarCep']);
+        Route::get('filtrar/segmentacao/{segmentacao}', [EstabelecimentoController::class, 'filtrarSegmentacao']);
     });
 
     Route::prefix('totem')->group(function () {

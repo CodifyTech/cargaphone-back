@@ -18,7 +18,7 @@ class TotemController extends Controller
      *  Injection of dependency with construct
      * @param mixed
      */
-    public function __construct(private Totem $totem, private TotemService $totemService)
+    public function __construct(private Totem $totem)
     {
     }
 
@@ -56,8 +56,7 @@ class TotemController extends Controller
     {
         try {
             $this->authorize('create', Totem::class);
-
-            $totem = $this->totemService->create($request->validated());
+            $totem = $this->totem->create($request->validated());
             return response()->json($totem);
         } catch (\Exception $e) {
             if ($e instanceof AuthorizationException) {
