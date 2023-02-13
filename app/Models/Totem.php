@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Observers\IdentifierObserver;
 use App\Traits\BelongsTenantScope;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\BelongsToRelationship;
@@ -27,6 +28,12 @@ class Totem extends Model
     public $incrementing = false;
 
     protected $keyType = 'uuid';
+
+    protected static function booted()
+    {
+        parent::boot();
+        static::observe(IdentifierObserver::class);
+    }
 
     public function estabelecimento(): BelongsTo
     {

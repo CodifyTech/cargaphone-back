@@ -25,7 +25,6 @@ class CreateTotemRequest extends FormRequest
     {
         return [
             'nome' => 'required',
-            'identificador' => 'required',
             'descricao' => 'required',
             'estabelecimento_id' => 'sometimes',
             'tenant_id' => 'required',
