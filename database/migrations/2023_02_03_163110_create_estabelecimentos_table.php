@@ -28,7 +28,6 @@ return new class extends Migration
             $table->string('cidade', 30);
             $table->string('complemento', 30)->nullable();
             $table->string('estado', 2);
-            $table->string('segmentacao', 30);
             $table->softDeletes();
 
 
