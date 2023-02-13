@@ -34,7 +34,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('pesquisarpor/responsavel/{responsavel}', [UnidadeController::class, 'pesquisarResponsavel']);
         Route::get('pesquisarpor/cidade/{cidade}', [UnidadeController::class, 'pesquisarCidade']);
         Route::get('pesquisarpor/estado/{estado}', [UnidadeController::class, 'pesquisarEstado']);
-
         Route::get('', [UnidadeController::class, 'index']);
         Route::get('/{id}', [UnidadeController::class, 'show']);
         Route::put('/{id}', [UnidadeController::class, 'update']);
@@ -55,7 +54,6 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('estabelecimento')->group(function () {
         Route::get('', [EstabelecimentoController::class, 'index']);
         Route::post('', [EstabelecimentoController::class, 'store']);
-        // Route::get('/{id}', [EstabelecimentoController::class, 'show']);
         Route::get('/{id}', [EstabelecimentoController::class, 'show']);
         Route::put('/{id}', [EstabelecimentoController::class, 'update']);
         Route::delete('/{id}', [EstabelecimentoController::class, 'destroy']);
@@ -78,6 +76,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/pesquisarpor/nome/{nome}', [TotemController::class, 'pesquisarNome']);
         Route::get('/pesquisarpor/identificador/{identificador}', [TotemController::class, 'pesquisarIdentificador']);
         Route::get('/com/estabelecimento', [TotemController::class, 'totemComEstabelecimentos']);
+        Route::get('/status/ativo', [TotemController::class, 'TotensAtivos']);
+        
     });
 
 
@@ -94,6 +94,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/pesquisarpor/telefone/{telefone}', [AnuncioController::class, 'pesquisarTelContato']);
         Route::get('/pesquisarpor/email/{email}', [AnuncioController::class, 'pesquisarEmailContato']);
         Route::get('/pesquisarpor/nome_anunciante/{nomeAnunciante}', [AnuncioController::class, 'pesquisarNomeAnunciante']);
+        Route::get('/status/ativo', [AnuncioController::class, 'anunciosAtivos']);
+        Route::get('/total/faturamento', [AnuncioController::class, 'anunciosFaturamento']);
     });
 
 
