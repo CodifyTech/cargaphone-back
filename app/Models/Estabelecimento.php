@@ -28,6 +28,7 @@ class Estabelecimento extends Model
         'segmentacao',
         'complemento',
         'estado',
+        'segmentacao',
         'tenant_id'
     ];
 
