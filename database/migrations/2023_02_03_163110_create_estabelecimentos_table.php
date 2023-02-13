@@ -19,7 +19,8 @@ return new class extends Migration
             $table->string('nome', 40);
             $table->unsignedBigInteger('tenant_id');
             $table->string('razao_social', 40);
-            $table->string('cnpj')->unique();
+            $table->string('cnpj', 25)->unique();
+            $table->tinyInteger('segmentacao', 1);
             $table->string('responsavel', 60);
             $table->string('contato_responsavel', 35);
 

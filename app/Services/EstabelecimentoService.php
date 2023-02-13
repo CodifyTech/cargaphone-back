@@ -30,19 +30,24 @@ class EstabelecimentoService
             return 404;
         }
 
-        if (isset($data['cnpj'])) {
+        if ($data['cnpj']) {
             if ($estabelecimento->cnpj !== $data['cnpj']) {
                 if ($this->existeCnpj($data['cnpj'])) {
                     return 'DuplicateCNPJException';
                 }
             }
         }
+
+        $token = $_SERVER['HTTP_AUTHORIZATION'];
+        $tokenFree = JWTAuth::parseToken($token)->getPayload();
+        $tenantId = $tokenFree['tenant_id'];
+        $data['tenant_id'] = $tenantId;
         $estabelecimento->update($data);
         return $estabelecimento;
     }
 
     public function existeCnpj($cnpj)
     {
-        return Estabelecimento::whereCnpj($cnpj)->exists();
+        return Estabelecimento::where('cnpj', $cnpj)->exists();
     }
 }

@@ -33,7 +33,7 @@ class AnuncioService
     public function update($data, $id)
     {
         $anuncio = Anuncio::find($id);
-        if($anuncio == null)
+        if ($anuncio == null)
             return '404';
 
         $anuncio->fill($data->except('arquivo'));
@@ -62,5 +62,18 @@ class AnuncioService
 
         $anuncio->totems()->sync($data['totem_id']);
         return $anuncio;
+    }
+
+    public function faturamento()
+    {
+        $token = $_SERVER['HTTP_AUTHORIZATION'];
+        $payloadToken = JWTAuth::parseToken($token)->getPayload();
+        if ($payloadToken['role_id'] == 1) {
+            $total = Anuncio::sum('anuncios.valor_anuncio_mensal');
+        }
+        if ($payloadToken['role_id'] == 2) {
+            $total = Anuncio::where('tenant_id', $payloadToken['tenant_id'])->sum('anuncios.valor_anuncio_mensal');
+        }
+        return $total;
     }
 }

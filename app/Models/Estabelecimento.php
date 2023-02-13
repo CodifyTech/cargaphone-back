@@ -26,6 +26,10 @@ class Estabelecimento extends Model
         'tenant_id'
     ];
 
+    protected $casts = [
+        
+    ];
+
     public $incrementing = false;
 
     protected $keyType = 'uuid';

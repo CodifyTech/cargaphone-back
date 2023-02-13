@@ -55,6 +55,7 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('estabelecimento')->group(function () {
         Route::get('', [EstabelecimentoController::class, 'index']);
         Route::post('', [EstabelecimentoController::class, 'store']);
+        // Route::get('/{id}', [EstabelecimentoController::class, 'show']);
         Route::get('/{id}', [EstabelecimentoController::class, 'show']);
         Route::put('/{id}', [EstabelecimentoController::class, 'update']);
         Route::delete('/{id}', [EstabelecimentoController::class, 'destroy']);
@@ -68,6 +69,7 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('totem')->group(function () {
         Route::get('', [TotemController::class, 'index']);
+        Route::get('/ativo', [TotemController::class, 'totensAtivos']);
         Route::post('', [TotemController::class, 'store']);
         Route::get('/{id}', [TotemController::class, 'show']);
         Route::put('/{id}', [TotemController::class, 'update']);
@@ -80,6 +82,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('anuncio')->group(function () {
         Route::get('', [AnuncioController::class, 'index']);
+        Route::get('/faturamento', [AnuncioController::class, 'faturamento']);
+        Route::get('/ativo', [AnuncioController::class, 'anunciosAtivos']);
         Route::post('', [AnuncioController::class, 'store']);
         Route::get('/{id}', [AnuncioController::class, 'show']);
         Route::put('/{id}', [AnuncioController::class, 'update']);
