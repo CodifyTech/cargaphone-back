@@ -35,7 +35,8 @@ class UpdateEstabelecimentoRequest extends FormRequest
             'cidade' => 'required',
             'complemento' => 'sometimes',
             'estado' => 'required',
-            'tenant_id' => 'required'
+            'tenant_id' => 'required',
+            'estabelecimento_id' => 'sometimes',
         ];
     }
 }

@@ -24,8 +24,10 @@ class AnuncioService
         $tenantId = $tokenFree['tenant_id'];
         $data['tenant_id'] = $tenantId;
         $anuncio = Anuncio::create($data);
-        if ($totemId)
+
+        if (isset($totemId)) {
             $anuncio->totems()->sync($totemId);
+        }
 
         return $anuncio;
     }

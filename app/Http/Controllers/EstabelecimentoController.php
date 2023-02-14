@@ -34,7 +34,7 @@ class EstabelecimentoController extends Controller
     {
         try {
             $this->authorize('viewAny', $this->estabelecimento);
-            $estabelecimentos = $this->estabelecimento->select()->paginate();
+            $estabelecimentos = $this->estabelecimento->paginate();
             return response()->json($estabelecimentos);
         } catch (\Exception $e) {
             if ($e instanceof AuthorizationException) {
@@ -290,13 +290,5 @@ class EstabelecimentoController extends Controller
             throw new InternalServerErrorException();
         }
     }
-    public function filtrarSegmentacao($segmentacao)
-    {
-        try {
-            $estabelecimento = Estabelecimento::where('segmentacao', $segmentacao)->paginate();
-            return response()->json($estabelecimento);
-        } catch (\Exception $e) {
-            throw new InternalServerErrorException();
-        }
-    }
+
 }
