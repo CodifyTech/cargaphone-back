@@ -3,7 +3,8 @@
 namespace App\Services;
 
 use App\Models\Estabelecimento;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Utils\Token;
+
 
 class EstabelecimentoService
 {
@@ -12,12 +13,8 @@ class EstabelecimentoService
         if (Estabelecimento::whereCnpj($data['cnpj'])->exists()) {
             return 'DuplicateCNPJEntry';
         }
-
-        $token = $_SERVER['HTTP_AUTHORIZATION'];
-        $tokenFree = JWTAuth::parseToken($token)->getPayload();
-        $tenantId = $tokenFree['tenant_id'];
-        $data['tenant_id'] = $tenantId;
-
+        $payload = Token::decode();
+        $data['tenant_id'] = $payload['tenant_id'];
         $estabelecimento = Estabelecimento::create($data);
         return $estabelecimento;
     }
@@ -30,18 +27,13 @@ class EstabelecimentoService
             return 404;
         }
 
-        if ($data['cnpj']) {
-            if ($estabelecimento->cnpj !== $data['cnpj']) {
-                if ($this->existeCnpj($data['cnpj'])) {
-                    return 'DuplicateCNPJException';
-                }
+        if ($estabelecimento->cnpj !== $data['cnpj']) {
+            if ($this->existeCnpj($data['cnpj'])) {
+                return 'DuplicateCNPJException';
             }
         }
-
-        $token = $_SERVER['HTTP_AUTHORIZATION'];
-        $tokenFree = JWTAuth::parseToken($token)->getPayload();
-        $tenantId = $tokenFree['tenant_id'];
-        $data['tenant_id'] = $tenantId;
+        $payload = Token::decode();
+        $data['tenant_id'] = $payload['tenant_id'];
         $estabelecimento->update($data);
         return $estabelecimento;
     }

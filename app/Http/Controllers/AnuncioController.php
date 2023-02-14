@@ -57,7 +57,7 @@ class AnuncioController extends Controller
     public function store(CreateAnuncioRequest $request)
     {
         try {
-            $this->authorize('create', User::class);
+            $this->authorize('create', $this->anuncio);
             $anuncio = $this->anuncioService->create($request->except('totem_id'), $request['totem_id']);
             return response()->json($anuncio, 201);
         } catch (\Exception $e) {
@@ -80,7 +80,7 @@ class AnuncioController extends Controller
     public function vincularAnuncioTotem(SyncAnuncioTotemRequest $request)
     {
         try {
-            $this->authorize('sync', $this->anuncio);
+            $this->authorize('sync', $this->anuncio->find($request['anuncio_id']));
             $syncSuccess = $this->anuncioService->syncAnuncioTotem($request->validated());
             if ($syncSuccess === 404) {
                 return response()->json([
@@ -172,7 +172,7 @@ class AnuncioController extends Controller
     public function destroy($id)
     {
         try {
-            $this->authorize('delete', $this->anuncio);
+            $this->authorize('delete', $this->anuncio->find($id));
             $anuncio = $this->anuncio->find($id);
             if ($anuncio == null) {
                 return response()->json([

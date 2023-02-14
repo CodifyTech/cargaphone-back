@@ -59,12 +59,15 @@ class AnuncioPolicy
      * @param  \App\Models\User  $user
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function sync(User $user)
+    public function sync(User $user, Anuncio $anuncio)
     {
-        return $user->perfil == 2
+        return
+            $user->tenant_id == $anuncio->tenant_id
+            &&
+            $user->perfil == 2
             || $user->perfil == 1
             ? Response::allow()
-            : Response::deny('Você não tem autorizacão para vincular um anúncioao a um totem.');
+            : Response::deny('Você não tem autorizacão para vincular um anúncio a um totem.');
     }
 
     /**
@@ -92,7 +95,10 @@ class AnuncioPolicy
      */
     public function delete(User $user, Anuncio $anuncio)
     {
-        return $user->perfil == 2
+        return
+            $user->tenant_id === $anuncio->tenant_id
+            &&
+            $user->perfil == 2
             || $user->perfil == 1
             ? Response::allow()
             : Response::deny('Você não tem autorizacão para excluir este anúncio.');

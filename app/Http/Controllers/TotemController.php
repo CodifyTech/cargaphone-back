@@ -7,10 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTotemRequest;
 use App\Http\Requests\UpdateTotemRequest;
 use App\Models\Totem;
-use App\Services\TotemService;
+use App\Utils\Token;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TotemController extends Controller
 {
@@ -188,10 +186,9 @@ class TotemController extends Controller
     public function totemComEstabelecimentos()
     {
         try {
-            $token = $_SERVER['HTTP_AUTHORIZATION'];
-            $payloadToken = JWTAuth::parseToken($token)->getPayload();
-            if ($payloadToken['role_id'] !== 1) {
-                $totems = $this->totem->with('estabelecimento')->where('tenant_id', $payloadToken['tenant_id'])->get();
+            $payload = Token::decode();
+            if ($payload['role_id'] !== 1) {
+                $totems = $this->totem->with('estabelecimento')->where('tenant_id', $payload['tenant_id'])->get();
                 return response()->json($totems);
             }
             $totems = $this->totem->with('estabelecimento')->get();

@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Models\Anuncio;
+use App\Utils\Token;
+use App\Utils\Utils;
 use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -19,10 +21,8 @@ class AnuncioService
             $dataHoje = Carbon::now();
             $data['data_comeco_campanha'] = $dataHoje;
         }
-        $token = $_SERVER['HTTP_AUTHORIZATION'];
-        $tokenFree = JWTAuth::parseToken($token)->getPayload();
-        $tenantId = $tokenFree['tenant_id'];
-        $data['tenant_id'] = $tenantId;
+        $payload = Token::decode();
+        $data['tenant_id'] = $payload['tenant_id'];
         $anuncio = Anuncio::create($data);
 
         if (isset($totemId)) {
@@ -68,13 +68,12 @@ class AnuncioService
 
     public function faturamento()
     {
-        $token = $_SERVER['HTTP_AUTHORIZATION'];
-        $payloadToken = JWTAuth::parseToken($token)->getPayload();
-        if ($payloadToken['role_id'] == 1) {
+        $payload = Token::decode();
+        if ($payload['role_id'] == 1) {
             $total = Anuncio::sum('anuncios.valor_anuncio_mensal');
         }
-        if ($payloadToken['role_id'] == 2) {
-            $total = Anuncio::where('tenant_id', $payloadToken['tenant_id'])->sum('anuncios.valor_anuncio_mensal');
+        if ($payload['role_id'] == 2) {
+            $total = Anuncio::where('tenant_id', $payload['tenant_id'])->sum('anuncios.valor_anuncio_mensal');
         }
         return $total;
     }

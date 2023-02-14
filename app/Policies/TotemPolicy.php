@@ -18,9 +18,7 @@ class TotemPolicy
      */
     public function viewAny(User $user)
     {
-        // if($user->perfil == 1) {
         return true;
-        // }
     }
 
     /**
@@ -55,7 +53,9 @@ class TotemPolicy
      */
     public function update(User $user)
     {
-        return $user->perfil === 1;
+        return $user->perfil === 1
+            ||
+            $user->perfil === 2;
     }
 
     /**

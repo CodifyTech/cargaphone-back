@@ -25,7 +25,6 @@ class Estabelecimento extends Model
         'cep',
         'endereco',
         'cidade',
-        'segmentacao',
         'complemento',
         'estado',
         'segmentacao',
