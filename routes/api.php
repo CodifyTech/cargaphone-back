@@ -69,6 +69,7 @@ Route::middleware('auth:api')->group(function () {
     Route::prefix('totem')->group(function () {
         Route::get('', [TotemController::class, 'index']);
         Route::get('/ativo', [TotemController::class, 'totensAtivos']);
+        Route::get('/inativo', [TotemController::class, 'totensInativos']);
         Route::post('', [TotemController::class, 'store']);
         Route::get('/{id}', [TotemController::class, 'show']);
         Route::put('/{id}', [TotemController::class, 'update']);
@@ -76,8 +77,7 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/pesquisarpor/nome/{nome}', [TotemController::class, 'pesquisarNome']);
         Route::get('/pesquisarpor/identificador/{identificador}', [TotemController::class, 'pesquisarIdentificador']);
         Route::get('/com/estabelecimento', [TotemController::class, 'totemComEstabelecimentos']);
-        Route::get('/status/ativo', [TotemController::class, 'TotensAtivos']);
-        
+
     });
 
 

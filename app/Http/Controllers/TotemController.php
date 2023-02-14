@@ -209,4 +209,16 @@ class TotemController extends Controller
             throw new InternalServerErrorException();
         }
     }
+
+    public function totensInativos()
+    {
+        try {
+            $totens = $this->totem->where('ativo', 0)->count('*');
+            return response()->json([
+                'totens' => $totens
+            ]);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }
 }
