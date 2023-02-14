@@ -7,9 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\CreateTotemRequest;
 use App\Http\Requests\UpdateTotemRequest;
 use App\Models\Totem;
-use App\Services\TotemService;
-use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Utils\Token;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class TotemController extends Controller
 {
@@ -17,7 +16,7 @@ class TotemController extends Controller
      *  Injection of dependency with construct
      * @param mixed
      */
-    public function __construct(private Totem $totem, private TotemService $totemService)
+    public function __construct(private Totem $totem)
     {
     }
 
@@ -30,9 +29,17 @@ class TotemController extends Controller
     public function index()
     {
         try {
+            $this->authorize('viewAny', Totem::class);
+
             $totens = $this->totem->paginate();
             return response()->json($totens);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -46,10 +53,16 @@ class TotemController extends Controller
     public function store(CreateTotemRequest $request)
     {
         try {
-
-            $totem = $this->totemService->create($request->validated());
+            $this->authorize('create', Totem::class);
+            $totem = $this->totem->create($request->validated());
             return response()->json($totem);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -63,6 +76,8 @@ class TotemController extends Controller
     public function show($id)
     {
         try {
+            $this->authorize('view', Totem::class);
+
             $totem = $this->totem->find($id);
             if ($totem == null) {
                 return response()->json([
@@ -71,7 +86,13 @@ class TotemController extends Controller
                 ], 404);
             }
             return response()->json($totem);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -86,6 +107,8 @@ class TotemController extends Controller
     public function update(UpdateTotemRequest $request, $id)
     {
         try {
+            $this->authorize('update', Totem::class);
+
             $totem = $this->totem->find($id);
             if ($totem == null) {
                 return response()->json([
@@ -98,6 +121,12 @@ class TotemController extends Controller
                 'message' => 'Totem atualizado com sucesso. '
             ]);
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -111,6 +140,7 @@ class TotemController extends Controller
     public function destroy($id)
     {
         try {
+            $this->authorize('delete', Totem::class);
             $totem = $this->totem->find($id);
             if ($totem == null) {
                 return response()->json([
@@ -122,26 +152,61 @@ class TotemController extends Controller
             return response()->json([
                 'message' => 'Totem excluído com sucesso.'
             ]);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
 
     public function pesquisarNome($nome)
     {
-        $totens = $this->totem->where('nome', 'like', '%' . $nome . '%')->with('estabelecimento')->paginate();
-        return response()->json($totens);
+        try {
+            $totens = $this->totem->where('nome', 'like', '%' . $nome . '%')->with('estabelecimento')->paginate();
+            return response()->json($totens);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
     }
 
     public function pesquisarIdentificador($identificador)
     {
-        $totens = $this->totem->where('identificador', 'like', '%' . $identificador . '%')->with('estabelecimento')->paginate();
-        return response()->json($totens);
+        try {
+            $totens = $this->totem->where('identificador', 'like', '%' . $identificador . '%')->with('estabelecimento')->paginate();
+            return response()->json($totens);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
     }
 
     public function totemComEstabelecimentos()
     {
-        $totems = $this->totem->with('estabelecimento')->get();
-        return response()->json($totems);
+        try {
+            $payload = Token::decode();
+            if ($payload['role_id'] !== 1) {
+                $totems = $this->totem->with('estabelecimento')->where('tenant_id', $payload['tenant_id'])->get();
+                return response()->json($totems);
+            }
+            $totems = $this->totem->with('estabelecimento')->get();
+            return response()->json($totems);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    public function totensAtivos()
+    {
+        try {
+            $totens = $this->totem->where('ativo', 1)->count('*');
+            return response()->json([
+                'totens' => $totens
+            ]);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
     }
 }

@@ -28,13 +28,15 @@ class UpdateEstabelecimentoRequest extends FormRequest
             'razao_social' => 'required',
             'cnpj' => 'required',
             'responsavel' => 'required',
+            'segmentacao' => 'required',
             'contato_responsavel' => 'required',
             'cep' => 'required',
             'endereco' => 'required',
             'cidade' => 'required',
             'complemento' => 'sometimes',
             'estado' => 'required',
-            'tenant_id' => 'required'
+            'tenant_id' => 'required',
+            'estabelecimento_id' => 'sometimes',
         ];
     }
 }

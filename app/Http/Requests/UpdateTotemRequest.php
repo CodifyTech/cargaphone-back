@@ -25,7 +25,6 @@ class UpdateTotemRequest extends FormRequest
     {
         return [
             'nome' => 'required',
-            'identificador' => 'required',
             'descricao' => 'required',
             'estabelecimento_id' => 'required',
             'ativo' => 'required'

@@ -34,7 +34,6 @@ Route::middleware('auth:api')->group(function () {
         Route::get('pesquisarpor/responsavel/{responsavel}', [UnidadeController::class, 'pesquisarResponsavel']);
         Route::get('pesquisarpor/cidade/{cidade}', [UnidadeController::class, 'pesquisarCidade']);
         Route::get('pesquisarpor/estado/{estado}', [UnidadeController::class, 'pesquisarEstado']);
-
         Route::get('', [UnidadeController::class, 'index']);
         Route::get('/{id}', [UnidadeController::class, 'show']);
         Route::put('/{id}', [UnidadeController::class, 'update']);
@@ -64,11 +63,12 @@ Route::middleware('auth:api')->group(function () {
         Route::get('pesquisarpor/cidade/{cidade}', [EstabelecimentoController::class, 'pesquisarCidade']);
         Route::get('pesquisarpor/contato/{contato}', [EstabelecimentoController::class, 'pesquisarContato']);
         Route::get('pesquisarpor/cep/{cep}', [EstabelecimentoController::class, 'pesquisarCep']);
-        Route::get('pesquisarpor/segmentacao/{segmentacao}', [EstabelecimentoController::class, 'pesquisarSegmentacao']);
+        Route::get('filtrar/segmentacao/{segmentacao}', [EstabelecimentoController::class, 'filtrarSegmentacao']);
     });
 
     Route::prefix('totem')->group(function () {
         Route::get('', [TotemController::class, 'index']);
+        Route::get('/ativo', [TotemController::class, 'totensAtivos']);
         Route::post('', [TotemController::class, 'store']);
         Route::get('/{id}', [TotemController::class, 'show']);
         Route::put('/{id}', [TotemController::class, 'update']);
@@ -83,6 +83,8 @@ Route::middleware('auth:api')->group(function () {
 
     Route::prefix('anuncio')->group(function () {
         Route::get('', [AnuncioController::class, 'index']);
+        Route::get('/faturamento', [AnuncioController::class, 'faturamento']);
+        Route::get('/ativo', [AnuncioController::class, 'anunciosAtivos']);
         Route::post('', [AnuncioController::class, 'store']);
         Route::get('/{id}', [AnuncioController::class, 'show']);
         Route::put('/{id}', [AnuncioController::class, 'update']);

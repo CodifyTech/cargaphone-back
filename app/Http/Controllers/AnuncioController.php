@@ -9,7 +9,10 @@ use App\Http\Requests\SyncAnuncioTotemRequest;
 use App\Http\Requests\UpdateAnuncioRequest;
 use App\Models\Anuncio;
 use App\Services\AnuncioService;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 
 class AnuncioController extends Controller
@@ -31,9 +34,16 @@ class AnuncioController extends Controller
     public function index()
     {
         try {
+            $this->authorize('viewAny', $this->anuncio);
             $anuncios = $this->anuncio->paginate();
             return response()->json($anuncios);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -47,9 +57,16 @@ class AnuncioController extends Controller
     public function store(CreateAnuncioRequest $request)
     {
         try {
+            $this->authorize('create', $this->anuncio);
             $anuncio = $this->anuncioService->create($request->except('totem_id'), $request['totem_id']);
             return response()->json($anuncio, 201);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -63,6 +80,7 @@ class AnuncioController extends Controller
     public function vincularAnuncioTotem(SyncAnuncioTotemRequest $request)
     {
         try {
+            $this->authorize('sync', $this->anuncio->find($request['anuncio_id']));
             $syncSuccess = $this->anuncioService->syncAnuncioTotem($request->validated());
             if ($syncSuccess === 404) {
                 return response()->json([
@@ -76,6 +94,12 @@ class AnuncioController extends Controller
                 ], 201);
             }
         } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -89,6 +113,7 @@ class AnuncioController extends Controller
     public function show($id)
     {
         try {
+            $this->authorize('view', $this->anuncio->find($id));
             $anuncio = $this->anuncio->find($id);
             if ($anuncio == null) {
                 return response()->json([
@@ -96,9 +121,14 @@ class AnuncioController extends Controller
                     'message' => 'Não foi encontrado nenhum anúncio com este ID',
                 ], 404);
             }
-
             return response()->json($anuncio);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -113,6 +143,7 @@ class AnuncioController extends Controller
     public function update(UpdateAnuncioRequest $request, $id)
     {
         try {
+            $this->authorize('update', $this->anuncio->find($id));
             $anuncio = $this->anuncioService->update($request, $id);
             if ($anuncio == '404') {
                 return response()->json([
@@ -121,7 +152,13 @@ class AnuncioController extends Controller
                 ], 404);
             }
             return response()->json($anuncio);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -135,18 +172,25 @@ class AnuncioController extends Controller
     public function destroy($id)
     {
         try {
+            $this->authorize('delete', $this->anuncio->find($id));
             $anuncio = $this->anuncio->find($id);
             if ($anuncio == null) {
                 return response()->json([
                     'except' => 'NotFoundException',
-                    'message' => 'Não foi encontrado nenhum anúncio',
+                    'message' => 'Não foi encontrado nenhum anúncio com este ID.',
                 ], 404);
             }
             $anuncio->delete();
             return response()->json([
                 'message' => 'Anúncio Excluído com sucesso'
             ], 200);
-        } catch (\Exception) {
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
             throw new InternalServerErrorException();
         }
     }
@@ -187,6 +231,30 @@ class AnuncioController extends Controller
             $anuncios = Anuncio::where('nome_anunciante', 'like', '%' .  $nomeAnunciante . '%')->paginate();
             return response()->json($anuncios);
         } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    public function anunciosAtivos()
+    {
+        try {
+            $anuncios = $this->anuncio->where('ativo', 1)->count('*');
+            return response()->json([
+                'anuncios' => $anuncios
+            ]);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
+    }
+
+    public function faturamento()
+    {
+        try {
+            $faturamento = $this->anuncioService->faturamento();
+            return response()->json([
+                'faturamento' => $faturamento
+            ]);
+        } catch (\Exception) {
             throw new InternalServerErrorException();
         }
     }

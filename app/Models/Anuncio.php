@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
+use App\Enums\CategoriaAnuncio;
 use App\Traits\BelongsTenantScope;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Anuncio extends Model
@@ -28,6 +31,10 @@ class Anuncio extends Model
         'tenant_id'
     ];
 
+    protected $casts = [
+        'tipo_campanha' => CategoriaAnuncio::class
+    ];
+
     protected function arquivo(): Attribute
     {
         return Attribute::make(
@@ -35,12 +42,12 @@ class Anuncio extends Model
         );
     }
 
-    public function totems()
+    public function totems(): BelongsToMany
     {
         return $this->belongsToMany(Totem::class);
     }
 
-    public function unidade()
+    public function unidade(): BelongsTo
     {
         return $this->BelongsTo(Unidade::class);
     }

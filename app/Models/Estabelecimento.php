@@ -2,11 +2,15 @@
 
 namespace App\Models;
 
+use App\Enums\Segmentacao;
 use App\Traits\BelongsTenantScope;
 use App\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
 
 class Estabelecimento extends Model
 {
@@ -27,16 +31,20 @@ class Estabelecimento extends Model
         'tenant_id'
     ];
 
+    protected $casts = [
+        'segmentacao' => Segmentacao::class
+    ];
+
     public $incrementing = false;
 
     protected $keyType = 'uuid';
 
-    public function unidade()
+    public function unidade() :BelongsTo
     {
         return $this->belongsTo(Unidade::class);
     }
 
-    public function totens()
+    public function totens(): HasMany
     {
         return $this->hasMany(Totem::class);
     }
