@@ -188,6 +188,12 @@ class TotemController extends Controller
     public function totemComEstabelecimentos()
     {
         try {
+            $token = $_SERVER['HTTP_AUTHORIZATION'];
+            $payloadToken = JWTAuth::parseToken($token)->getPayload();
+            if ($payloadToken['role_id'] !== 1) {
+                $totems = $this->totem->with('estabelecimento')->where('tenant_id', $payloadToken['tenant_id'])->get();
+                return response()->json($totems);
+            }
             $totems = $this->totem->with('estabelecimento')->get();
             return response()->json($totems);
         } catch (\Exception $e) {
