@@ -1,5 +1,6 @@
 <?php
 
+use Carbon\Carbon;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -17,8 +18,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
 
             $table->string('nome', 40);
-            $table->unsignedBigInteger('tenant_id');
-            $table->string('razao_social', 40);
+            $table->unsignedBigInteger('tenant_id')->nullable();
+            $table->string('razao_social', 40)->nullable();
+            $table->string('documento_legal', 50)->nullable();
             $table->string('cnpj', 25)->unique();
             $table->tinyInteger('segmentacao');
             $table->string('responsavel', 60);
@@ -29,6 +31,11 @@ return new class extends Migration
             $table->string('cidade', 30);
             $table->string('complemento', 30)->nullable();
             $table->string('estado', 2);
+            $table->dateTime('data_ativacao')->default(Carbon::now());
+
+            $table->integer('id_old')->nullable();
+            $table->integer('tenant_id_old')->nullable();
+
             $table->softDeletes();
 
 

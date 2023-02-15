@@ -33,6 +33,7 @@ class CreateUnidadeRequest extends FormRequest
             'cep' => 'sometimes',
             'cidade' => 'sometimes',
             'estado' => 'sometimes',
+            'email' => 'required|email'
         ];
     }
 }

@@ -35,6 +35,9 @@ return new class extends Migration
             $table->string('bairro', 30)->nullable();
             $table->string('estado', 2)->nullable();
 
+            $table->integer('id_old')->nullable();
+            $table->integer('tenant_id_old')->nullable();
+
             $table->string('confirmation_token')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

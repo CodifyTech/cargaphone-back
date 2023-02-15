@@ -26,7 +26,8 @@ class UnidadeFactory extends Factory
             'numero' => 133,
             'cep' => 12312123,
             'cidade' => 'São Paulo',
-            'estado' => 'SP'
+            'estado' => 'SP',
+            'id_old' => 0
         ];
     }
 }

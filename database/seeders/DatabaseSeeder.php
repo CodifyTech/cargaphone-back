@@ -23,6 +23,13 @@ class DatabaseSeeder extends Seeder
     {
         Unidade::factory()->create();
         User::factory()->create();
-        Anuncio::factory()->has(Totem::factory())->create();
+        // Anuncio::factory()->has(Totem::factory())->create();
+
+        Unidade::factory()->create([
+            'id' => 2,
+            'nome' => 'Unidade Padrão',
+            'cnpj_empresa' => '',
+            'nome_responsavel' => 'Felipe Aires',
+        ]);
     }
 }

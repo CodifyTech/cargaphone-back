@@ -16,11 +16,12 @@ class Unidade extends Model
         'cnpj_empresa',
         'nome_responsavel',
         'dt_abertura',
+        'email',
         'nome_rua',
         'numero',
         'cep',
         'cidade',
-        'estado'
+        'estado',
     ];
 
 
