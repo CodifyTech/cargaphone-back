@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\InternalServerErrorException;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\AlocarTotemEstabelecimentoRequest;
 use App\Http\Requests\CreateTotemRequest;
 use App\Http\Requests\UpdateTotemRequest;
 use App\Models\Totem;
@@ -127,6 +128,17 @@ class TotemController extends Controller
                     'message' => $e->getMessage(),
                 ], 401);
             }
+            throw new InternalServerErrorException();
+        }
+    }
+
+    public function alocarTotemEstabelecimento(AlocarTotemEstabelecimentoRequest $request, $id)
+    {
+        try {
+            $totem = $this->totem->find($id);
+            $totem->update($request->validated());
+
+        } catch (\Exception $e) {
             throw new InternalServerErrorException();
         }
     }
