@@ -18,8 +18,8 @@ return new class extends Migration
         Schema::create('anuncio_totem', function (Blueprint $table) {
             $table->foreignIdFor(Anuncio::class)->nullable()->constrained()->cascadeOnDelete();
             $table->foreignIdFor(Totem::class)->nullable()->constrained()->cascadeOnDelete();
-            $table->integer('anuncio_id_old');
-            $table->integer('totem_id_old');
+            $table->integer('anuncio_id_old')->nullable();
+            $table->integer('totem_id_old')->nullable();
         });
     }
 
