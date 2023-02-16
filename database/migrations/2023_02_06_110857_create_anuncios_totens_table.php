@@ -16,9 +16,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('anuncio_totem', function (Blueprint $table) {
-
-            $table->foreignIdFor(Anuncio::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Totem::class)->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Anuncio::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->foreignIdFor(Totem::class)->nullable()->constrained()->cascadeOnDelete();
+            $table->integer('anuncio_id_old');
+            $table->integer('totem_id_old');
         });
     }
 

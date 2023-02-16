@@ -21,13 +21,15 @@ return new class extends Migration
             $table->unsignedBigInteger('tenant_id')->nullable();
             $table->string('razao_social', 40)->nullable();
             $table->string('documento_legal', 50)->nullable();
-            $table->string('cnpj', 25)->unique();
-            $table->tinyInteger('segmentacao');
+            $table->string('cnpj', 25)->unique()->nullable();
+            $table->tinyInteger('segmentacao')->nullable();
             $table->string('responsavel', 60);
-            $table->string('contato_responsavel', 35);
+            $table->string('email_responsavel', 35);
+            $table->string('telefone_responsavel', 15)->nullable();
 
             $table->string('cep', 10);
             $table->string('endereco', 50);
+            $table->integer('numero')->nullable();
             $table->string('cidade', 30);
             $table->string('complemento', 30)->nullable();
             $table->string('estado', 2);

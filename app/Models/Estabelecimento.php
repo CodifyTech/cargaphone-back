@@ -21,14 +21,17 @@ class Estabelecimento extends Model
         'razao_social',
         'cnpj',
         'responsavel',
-        'contato_responsavel',
+        'email_responsavel',
+        'telefone_responsavel',
         'cep',
         'endereco',
+        'numero',
         'cidade',
         'complemento',
         'estado',
         'segmentacao',
-        'tenant_id'
+        'tenant_id',
+
     ];
 
     protected $casts = [
@@ -39,7 +42,7 @@ class Estabelecimento extends Model
 
     protected $keyType = 'uuid';
 
-    public function unidade() :BelongsTo
+    public function unidade(): BelongsTo
     {
         return $this->belongsTo(Unidade::class);
     }
@@ -48,6 +51,4 @@ class Estabelecimento extends Model
     {
         return $this->hasMany(Totem::class);
     }
-
-
 }

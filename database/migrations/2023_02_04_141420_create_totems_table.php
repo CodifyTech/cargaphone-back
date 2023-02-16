@@ -33,7 +33,6 @@ return new class extends Migration
             $table->string('estabelecimento_id')->nullable();
             $table->foreign('estabelecimento_id')->references('id')->on('estabelecimentos');
 
-
             $table->integer('id_old')->nullable();
             $table->integer('tenant_id_old')->nullable();
 

@@ -23,7 +23,7 @@ class EstabelecimentoFactory extends Factory
             'razao_social' => 'Estabelecimento Teste',
             'cnpj' => '66.556.469/8798-72',
             'responsavel' => 'Felipe Aires',
-            'contato_responsavel' => 'felipe@cargaphone.com.br',
+            'email_responsavel' => 'felipe@cargaphone.com.br',
             'cep' => '04909004',
             'endereco' => 'Rua Fictícia Exemplo',
             'cidade' => 'Cidade Exemplo',

@@ -252,7 +252,7 @@ class EstabelecimentoController extends Controller
     public function pesquisarContato($contato)
     {
         try {
-            $Estabelecimento = Estabelecimento::where('contato_responsavel', 'like', '%' .  $contato . '%')->paginate();
+            $Estabelecimento = Estabelecimento::where('email_responsavel', 'like', '%' .  $contato . '%')->paginate();
             return response()->json($Estabelecimento);
         } catch (\Exception $e) {
             if ($e instanceof AuthorizationException) {
@@ -290,5 +290,4 @@ class EstabelecimentoController extends Controller
             throw new InternalServerErrorException();
         }
     }
-
 }

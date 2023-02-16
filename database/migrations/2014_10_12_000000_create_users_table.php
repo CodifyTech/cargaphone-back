@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name', 60);
-            $table->string('email', 60)->unique();
+            $table->string('email', 60);
             $table->string('password');
             $table->tinyInteger('perfil');
 
@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('cidade', 30)->nullable();
             $table->string('bairro', 30)->nullable();
             $table->string('estado', 2)->nullable();
+            $table->boolean('ativo')->default(1)->nullable();
 
             $table->integer('id_old')->nullable();
             $table->integer('tenant_id_old')->nullable();

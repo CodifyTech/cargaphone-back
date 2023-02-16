@@ -136,6 +136,12 @@ class TotemController extends Controller
     {
         try {
             $totem = $this->totem->find($id);
+            if (!$totem) {
+                return response()->json([
+                    'exception' => 'NotFoundException',
+                    'message' => 'Nenhum totem foi encontrado com este ID'
+                ], 404);
+            }
             $totem->update($request->validated());
 
         } catch (\Exception $e) {
