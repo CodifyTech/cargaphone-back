@@ -208,7 +208,7 @@ class TotemController extends Controller
     public function pesquisarNome($nome)
     {
         try {
-            $totens = $this->totem->where('nome', 'like', '%' . $nome . '%')->with('estabelecimento')->paginate();
+            $totens = $this->totem->where('nome', 'like', '%' . $nome . '%')->with('estabelecimento')->with('anuncios')->paginate();
             return response()->json($totens);
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
@@ -218,7 +218,7 @@ class TotemController extends Controller
     public function pesquisarIdentificador($identificador)
     {
         try {
-            $totens = $this->totem->where('identificador', 'like', '%' . $identificador . '%')->with('estabelecimento')->paginate();
+            $totens = $this->totem->where('identificador', 'like', '%' . $identificador . '%')->with('estabelecimento')->with('anuncios')->paginate();
             return response()->json($totens);
         } catch (\Exception $e) {
             throw new InternalServerErrorException();

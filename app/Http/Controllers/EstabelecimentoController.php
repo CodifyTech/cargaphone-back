@@ -252,8 +252,8 @@ class EstabelecimentoController extends Controller
     public function pesquisarContato($contato)
     {
         try {
-            $Estabelecimento = Estabelecimento::where('email_responsavel', 'like', '%' .  $contato . '%')->paginate();
-            return response()->json($Estabelecimento);
+            $estabelecimentos = Estabelecimento::where('telefone_responsavel', 'like', '%' .  $contato . '%')->paginate();
+            return response()->json($estabelecimentos);
         } catch (\Exception $e) {
             if ($e instanceof AuthorizationException) {
                 return response()->json([
