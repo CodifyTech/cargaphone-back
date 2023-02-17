@@ -98,6 +98,30 @@ class TotemController extends Controller
         }
     }
 
+    public function totemsComAnuncios($id)
+    {
+        try {
+            $this->authorize('view', Totem::class);
+
+            $totem = $this->totem->with('anuncios')->find($id);
+            if ($totem == null) {
+                return response()->json([
+                    'exception' => 'NotFoundException',
+                    'message' => 'Não foi encontrado nenhum totem com este ID.'
+                ], 404);
+            }
+            return response()->json($totem);
+        } catch (\Exception $e) {
+            if ($e instanceof AuthorizationException) {
+                return response()->json([
+                    'exception' => 'Unauthorized',
+                    'message' => $e->getMessage(),
+                ], 401);
+            }
+            throw new InternalServerErrorException();
+        }
+    }
+
     /**
      * Update the specified resource in storage.
      *
@@ -201,15 +225,15 @@ class TotemController extends Controller
         }
     }
 
-    public function totemComEstabelecimentos()
+    public function totemComEstabelecimentosEAnucios()
     {
         try {
             $payload = Token::decode();
             if ($payload['role_id'] !== 1) {
-                $totems = $this->totem->with('estabelecimento')->where('tenant_id', $payload['tenant_id'])->get();
+                $totems = $this->totem->with('estabelecimento')->with('anuncios')->where('tenant_id', $payload['tenant_id'])->paginate();
                 return response()->json($totems);
             }
-            $totems = $this->totem->with('estabelecimento')->get();
+            $totems = $this->totem->with('estabelecimento')->with('anuncios')->paginate();
             return response()->json($totems);
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
