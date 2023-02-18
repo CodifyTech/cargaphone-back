@@ -11,6 +11,10 @@ class UnidadeService
         if ($this->existeCnpj($data['cnpj_empresa'])) {
             return 'DuplicateCNPJEntry';
         }
+        if(Unidade::where('email', $data['email'])->exists()) {
+            return 403;
+        }
+
         $unidade = Unidade::create($data);
         return $unidade;
     }

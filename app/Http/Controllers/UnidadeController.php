@@ -63,6 +63,12 @@ class UnidadeController extends Controller
                     'message' => 'Já existe uma unidade franqueada com este CNPJ.'
                 ], 403);
             }
+            if($unidade == 403) {
+                return response()->json([
+                    'Exception' => 'DuplicateEmailException',
+                    'message' => 'Já existe uma unidade franqueada com este E-MAIL.'
+                ], 403);
+            }
             return response()->json($unidade, 201);
         } catch (\Exception $e) {
             if ($e instanceof AuthorizationException) {
