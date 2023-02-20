@@ -12,7 +12,7 @@ class UnidadeService
             return 'DuplicateCNPJEntry';
         }
         if(Unidade::where('email', $data['email'])->exists()) {
-            return 403;
+            return '403';
         }
 
         $unidade = Unidade::create($data);

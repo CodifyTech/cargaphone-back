@@ -33,6 +33,15 @@ class TotemPolicy
         return $user->perfil === 1;
     }
 
+    public function viewOwnTotem(User $user, Totem $totem)
+    {
+        return $user->tenant_id === $totem->tenant_id
+            &&
+            $user->perfil === 2
+            ||
+            $user->perfil === 1;
+    }
+
     /**
      * Determine whether the user can create models.
      *

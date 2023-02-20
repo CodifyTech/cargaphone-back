@@ -101,8 +101,7 @@ class TotemController extends Controller
     public function totemsComAnuncios($id)
     {
         try {
-            $this->authorize('view', Totem::class);
-
+            $this->authorize('viewOwnTotem', $this->totem->find($id));
             $totem = $this->totem->with('anuncios')->find($id);
             if ($totem == null) {
                 return response()->json([
@@ -133,7 +132,6 @@ class TotemController extends Controller
     {
         try {
             $this->authorize('update', Totem::class);
-
             $totem = $this->totem->find($id);
             if ($totem == null) {
                 return response()->json([

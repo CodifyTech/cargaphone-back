@@ -180,6 +180,7 @@ class AnuncioController extends Controller
                     'message' => 'Não foi encontrado nenhum anúncio com este ID.',
                 ], 404);
             }
+            $anuncio->totems()->detach();
             $anuncio->delete();
             return response()->json([
                 'message' => 'Anúncio Excluído com sucesso'
