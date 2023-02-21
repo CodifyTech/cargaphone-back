@@ -17,7 +17,7 @@ class FraseFactory extends Factory
     public function definition()
     {
         return [
-            'frase' => 'Tudo que é bom dura o tempo que é necessário para ser inesquecível. - Fernando Pessoa'
+            //
         ];
     }
 }
