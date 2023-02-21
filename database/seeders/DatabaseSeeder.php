@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Anuncio;
 use App\Models\Estabelecimento;
+use App\Models\Frase;
 use App\Models\Totem;
 use App\Models\Unidade;
 use App\Models\User;
@@ -21,15 +22,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Unidade::factory()->create();
+        $this->call([
+            FraseSeeder::class,
+            UnidadeSeeder::class,
+        ]);
         User::factory()->create();
         // Anuncio::factory()->has(Totem::factory())->create();
-
-        Unidade::factory()->create([
-            'id' => 2,
-            'nome' => 'Unidade Padrão',
-            'cnpj_empresa' => '',
-            'nome_responsavel' => 'Felipe Aires',
-        ]);
     }
 }

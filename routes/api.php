@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\{AnuncioController, AuthController, EstabelecimentoController, TotemController, UnidadeController, UserController};
+use App\Http\Controllers\{AnuncioController, AuthController, EstabelecimentoController, FraseController, TotemController, UnidadeController, UserController};
 use Illuminate\Support\Facades\Route;
 
 Route::post('auth/login', [AuthController::class, 'login']);
@@ -28,7 +28,6 @@ Route::middleware('auth:api')->group(function () {
     });
 
     Route::prefix('unidade')->group(function () {
-
         Route::get('pesquisarpor/nome/{nome}', [UnidadeController::class, 'pesquisarNome']);
         Route::get('pesquisarpor/cnpj/{cnpj}', [UnidadeController::class, 'pesquisarCnpj']);
         Route::get('pesquisarpor/responsavel/{responsavel}', [UnidadeController::class, 'pesquisarResponsavel']);
@@ -99,6 +98,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/status/ativo', [AnuncioController::class, 'anunciosAtivos']);
         Route::get('/total/faturamento', [AnuncioController::class, 'anunciosFaturamento']);
     });
+
+    Route::get('frases', [FraseController::class, 'index']);
 
 
     Route::post('verificar-email', [AuthController::class, 'verifyEmail']);
