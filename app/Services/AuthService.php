@@ -24,7 +24,8 @@ class AuthService
                         'tenant_id' => $user->tenant_id
                     ])->attempt($credentials);
                     $abilities = [
-                        'all' => 'create, read, update, delete',
+                        'action' => 'manage',
+                        'subject' => 'all'
                     ];
                 }
                 if ($user->perfil == 2) {
@@ -33,12 +34,16 @@ class AuthService
                         'role_id' => $user->perfil,
                         'tenant_id' => $user->tenant_id
                     ])->attempt($credentials);
-                    $abilities = [
-                        'estabelecimentos' => 'create, read, update, delete',
-                        'anuncios' => 'create, read, update, delete',
+                    $abilities = [];
+                    $abilities[] = [
+                        'action' => 'manage',
+                        'subject' => 'Estabelecimento',
+                    ];
+                    $abilities[] = [
+                        'action' => 'manage',
+                        'subject' => 'Anuncio'
                     ];
                 }
-
                 if (!$tokenJwt) return 'LoginInvalidException';
 
                 return [
