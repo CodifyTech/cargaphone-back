@@ -165,7 +165,6 @@ class TotemController extends Controller
                 ], 404);
             }
             $totem->update($request->validated());
-
         } catch (\Exception $e) {
             throw new InternalServerErrorException();
         }
@@ -241,6 +240,13 @@ class TotemController extends Controller
     public function totensAtivos()
     {
         try {
+            $payload = Token::decode();
+            if ($payload['role_id'] !== 1) {
+                $totens = $this->totem->where('ativo', 1)->where('tenant_id', $payload['tenant_id'])->count('*');
+                return response()->json([
+                    'totens' => $totens
+                ]);
+            }
             $totens = $this->totem->where('ativo', 1)->count('*');
             return response()->json([
                 'totens' => $totens

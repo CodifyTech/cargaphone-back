@@ -23,7 +23,8 @@ class AuthService
                         'role_id' => $user->perfil,
                         'tenant_id' => $user->tenant_id
                     ])->attempt($credentials);
-                    $abilities = [
+                    $abilities= [];
+                    $abilities[] = [
                         'action' => 'manage',
                         'subject' => 'all'
                     ];
@@ -36,6 +37,7 @@ class AuthService
                     ])->attempt($credentials);
                     $abilities = [];
                     $abilities[] = [
+
                         'action' => 'manage',
                         'subject' => 'Estabelecimento',
                     ];
