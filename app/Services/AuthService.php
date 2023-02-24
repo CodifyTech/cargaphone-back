@@ -45,6 +45,10 @@ class AuthService
                         'action' => 'manage',
                         'subject' => 'Anuncio'
                     ];
+                    $abilities[] = [
+                        'action' => 'read',
+                        'subject' => 'Auth'
+                    ];
                 }
                 if (!$tokenJwt) return 'LoginInvalidException';
 
