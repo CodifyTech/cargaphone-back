@@ -19,8 +19,8 @@ class UserFactory extends Factory
     {
         return [
             'name' => 'Felipe Aires',
-            'email' => 'felipe@cargaphone.com.br',
-            'password' => bcrypt('123456'),
+            'email' => 'admin@admin.com.br',
+            'password' => '123456',
             'perfil' => 1,
             'cpf_usuario' => '000.000.000-00',
             'rg_usuario' => '0.000.000-00',
