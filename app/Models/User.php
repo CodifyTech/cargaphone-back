@@ -50,7 +50,7 @@ class User extends Authenticatable implements JWTSubject
     protected function fotoPerfil(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => 'http://' . $_SERVER['HTTP_HOST'] . "/storage/foto_perfil/" . $value,
+            get: fn ($value) => 'https://' . $_SERVER['HTTP_HOST'] . "/storage/foto_perfil/" . $value,
         );
     }
 
