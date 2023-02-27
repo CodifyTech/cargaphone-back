@@ -58,7 +58,7 @@ class EstabelecimentoController extends Controller
         try {
             $this->authorize('create', $this->estabelecimento);
             $estabelecimento = $this->estabelecimentoService->create($request->validated());
-            if ($estabelecimento == 'DuplicateCNPJEntry') {
+            if ($estabelecimento == 403) {
                 return response()->json([
                     'Exception' => 'DuplicateCNPJException',
                     'message' => 'Já existe um estabelecimento com este CNPJ.'
