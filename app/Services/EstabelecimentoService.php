@@ -41,6 +41,6 @@ class EstabelecimentoService
 
     public function existeCnpj($cnpj)
     {
-        return Estabelecimento::where('cnpj', $cnpj)->exists();
+        return Estabelecimento::where('cnpj', $cnpj)->withTrashed()->exists();
     }
 }

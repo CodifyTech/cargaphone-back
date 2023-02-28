@@ -53,7 +53,7 @@ class AnuncioService
 
     public function existeEmail($email)
     {
-        return Anuncio::where('email_contato', $email)->exists();
+        return Anuncio::where('email_contato', $email)->withTrashed()->exists();
     }
 
     public function syncAnuncioTotem($data)

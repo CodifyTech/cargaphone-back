@@ -20,6 +20,7 @@ class UserFactory extends Factory
         return [
             'name' => 'Felipe Aires',
             'email' => 'admin@admin.com.br',
+            // 'password' => bcrypt('123456'),
             'password' => '123456',
             'perfil' => 1,
             'cpf_usuario' => '000.000.000-00',
@@ -35,7 +36,8 @@ class UserFactory extends Factory
             'cidade' => 'Cidade X',
             'bairro' => 'Bairro X',
             'estado' => 'SP',
-            'tenant_id' => 1
+            'tenant_id' => 1,
+            'tenant_id_old' => 0
         ];
     }
 
