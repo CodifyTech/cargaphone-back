@@ -10,9 +10,8 @@ class EstabelecimentoService
 {
     public function create(array $data)
     {
-        if ($this->existeCnpj($data['cnpj'])) {
-            return 403;
-        }
+        if ($this->existeCnpj($data['cnpj'])) return '403';
+
         $payload = Token::decode();
         $data['tenant_id'] = $payload['tenant_id'];
         $estabelecimento = Estabelecimento::create($data);
