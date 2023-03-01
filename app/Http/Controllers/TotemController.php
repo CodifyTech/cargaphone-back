@@ -259,6 +259,13 @@ class TotemController extends Controller
     public function totensInativos()
     {
         try {
+            $payload = Token::decode();
+            if ($payload['role_id'] !== 1) {
+                $totens = $this->totem->where('ativo', 0)->where('tenant_id', $payload['tenant_id'])->count('*');
+                return response()->json([
+                    'totens' => $totens
+                ]);
+            }
             $totens = $this->totem->where('ativo', 0)->count('*');
             return response()->json([
                 'totens' => $totens
