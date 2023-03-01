@@ -31,7 +31,11 @@ class TotemController extends Controller
     {
         try {
             $this->authorize('viewAny', Totem::class);
-
+            $payload = Token::decode();
+            if ($payload['role_id'] !== 1) {
+                $totens = $this->totem->where('tenant_id', $payload['tenant_id'])->paginate();
+                return response()->json($totens);
+            }
             $totens = $this->totem->paginate();
             return response()->json($totens);
         } catch (\Exception $e) {
