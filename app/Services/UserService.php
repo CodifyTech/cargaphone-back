@@ -80,11 +80,11 @@ class UserService
 
     public function existeCpf($cpf)
     {
-        return User::where('cpf_usuario', $cpf)->exists();
+        return User::where('cpf_usuario', $cpf)->withTrashed()->exists();
     }
 
     public function existeEmail($email)
     {
-        return User::where('email', $email)->exists();
+        return User::where('email', $email)->withTrashed()->exists();
     }
 }

@@ -36,6 +36,6 @@ class UnidadeService
 
     public function existeCnpj($cnpj)
     {
-        return Unidade::where('cnpj_empresa', $cnpj)->exists();
+        return Unidade::where('cnpj_empresa', $cnpj)->withTrashed()->exists();
     }
 }
