@@ -2,15 +2,9 @@
 
 namespace App\Services;
 
-use App\Exceptions\CpfHasBeenTaken;
-use App\Exceptions\InternalServerErrorException;
 use Illuminate\Support\Str;
-use App\Exceptions\UserHasBeenTakenException;
-use App\Exceptions\WrongCpf;
 use App\Models\User;
-use Illuminate\Database\QueryException;
 use Ramsey\Uuid\Uuid;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class UserService
 {
@@ -30,7 +24,7 @@ class UserService
         if (isset($request['foto_perfil'])) {
             $extensaoArquivo = $request['foto_perfil']->getClientOriginalExtension();
             $nome = Uuid::uuid6() . '.' . $extensaoArquivo;
-            $arquivo = $request['foto_perfil']->storeAs('public/foto_perfil', $nome);
+            $request['foto_perfil']->storePubliclyAs('anuncios/', $nome, 's3');
             $request['foto_perfil'] = $nome;
         }
         $request['password'] = $userPassword;

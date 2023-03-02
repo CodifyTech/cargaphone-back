@@ -11,9 +11,6 @@ use App\Models\Anuncio;
 use App\Services\AnuncioService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Tymon\JWTAuth\Facades\JWTAuth;
-
 
 class AnuncioController extends Controller
 {

@@ -12,6 +12,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
@@ -50,7 +51,7 @@ class User extends Authenticatable implements JWTSubject
     protected function fotoPerfil(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => 'https://' . $_SERVER['HTTP_HOST'] . "/storage/foto_perfil/" . $value,
+            get: fn ($value) => Storage::disk('s3')->url('images/' . $value),
         );
     }
 

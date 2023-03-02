@@ -8,7 +8,6 @@ use App\Http\Requests\{
     ResetPasswordRequest,
     VerifyEmailRequest,
     LoginRequest,
-    RegisterUserRequest
 };
 use App\Http\Resources\UserResource;
 use App\Models\User;
