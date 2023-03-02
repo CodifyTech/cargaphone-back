@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\ErrorDeletingException;
 use App\Exceptions\InternalServerErrorException;
-use App\Exceptions\UserNotFoundException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Requests\UpdateUserRequest;

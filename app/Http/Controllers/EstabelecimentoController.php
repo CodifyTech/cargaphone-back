@@ -8,7 +8,6 @@ use App\Http\Requests\CreateEstabelecimentoRequest;
 use App\Http\Requests\UpdateEstabelecimentoRequest;
 use App\Http\Resources\EstabelecimentoResource;
 use App\Models\Estabelecimento;
-use App\Models\User;
 use App\Services\EstabelecimentoService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\QueryException;

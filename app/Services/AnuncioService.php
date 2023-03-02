@@ -15,7 +15,7 @@ class AnuncioService
     {
         $extensaoArquivo = $data['arquivo']->getClientOriginalExtension();
         $nome = Uuid::uuid6() . '.' . $extensaoArquivo;
-        $data['arquivo']->storeAs('public/anuncios', $nome);
+        $data['arquivo']->storePubliclyAs('anuncios/', $nome, 's3');
         $data['arquivo'] = $nome;
         if (strlen($data['data_comeco_campanha']) === 0) {
             $dataHoje = Carbon::now();

@@ -58,10 +58,12 @@ class EstabelecimentoPolicy
      */
     public function update(User $user, Estabelecimento $estabelecimento)
     {
-        return $user->tenant_id === $estabelecimento->tenant_id
-            &&
+        return
             $user->perfil === 1
-            || $user->perfil === 2
+            ||
+            $user->perfil === 2
+            &&
+            $user->tenant_id === $estabelecimento->tenant_id
             ? Response::allow()
             : Response::deny('Você não é o dono deste estabelecimento.');
     }

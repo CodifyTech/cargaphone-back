@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Anuncio extends Model
 {
@@ -38,7 +39,7 @@ class Anuncio extends Model
     protected function arquivo(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => 'http://' . $_SERVER['HTTP_HOST'] . "/storage/anuncios/" . $value,
+            get: fn ($value) => Storage::disk('s3')->url('anuncios/' . $value),
         );
     }
 
