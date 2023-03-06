@@ -3,12 +3,10 @@
 namespace App\Services;
 
 use App\Events\ForgotPassword;
-use App\Events\UserRegistered;
 use App\Exceptions\InternalServerErrorException;
 use App\Models\PasswordReset;
 use App\Models\User;
 use Illuminate\Support\Str;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AuthService
 {

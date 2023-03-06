@@ -4,10 +4,9 @@ namespace App\Services;
 
 use App\Models\Anuncio;
 use App\Utils\Token;
-use App\Utils\Utils;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AnuncioService
 {
@@ -38,13 +37,19 @@ class AnuncioService
         if ($anuncio == null)
             return '404';
 
+        $urlAnuncio = parse_url($anuncio->arquivo, PHP_URL_PATH);
+        $arquivoAtual = basename($urlAnuncio);
+        $caminhoS3 = 'anuncios/';
+
         $anuncio->fill($data->except('arquivo'));
         if ($arquivo = $data->hasFile('arquivo')) {
+            if (Storage::disk('s3')->get($caminhoS3. $arquivoAtual) !== null) {
+                Storage::disk('s3')->delete($caminhoS3 . $arquivoAtual);
+            }
             $arquivo = $data->file('arquivo');
             $extensaoArquivo = $arquivo->getClientOriginalExtension();
             $nomeArquivo = Uuid::uuid6() . '.' . $extensaoArquivo;
-            $caminhoArquivo = public_path() . '/storage/anuncios/';
-            $arquivo->move($caminhoArquivo, $nomeArquivo);
+            $data['arquivo']->storePubliclyAs($caminhoS3, $nomeArquivo, 's3');
             $anuncio->arquivo = $nomeArquivo;
         }
         $anuncio->save();
