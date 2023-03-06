@@ -4,10 +4,8 @@ namespace App\Services;
 
 use App\Models\Anuncio;
 use App\Utils\Token;
-use App\Utils\Utils;
 use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
-use Tymon\JWTAuth\Facades\JWTAuth;
 
 class AnuncioService
 {

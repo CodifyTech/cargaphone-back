@@ -24,7 +24,7 @@ class UserService
         if (isset($request['foto_perfil'])) {
             $extensaoArquivo = $request['foto_perfil']->getClientOriginalExtension();
             $nome = Uuid::uuid6() . '.' . $extensaoArquivo;
-            $request['foto_perfil']->storePubliclyAs('anuncios/', $nome, 's3');
+            $request['foto_perfil']->storePubliclyAs('images/', $nome, 's3');
             $request['foto_perfil'] = $nome;
         }
         $request['password'] = $userPassword;
