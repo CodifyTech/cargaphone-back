@@ -51,7 +51,7 @@ class User extends Authenticatable implements JWTSubject
     protected function fotoPerfil(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) => Storage::disk('s3')->url('images/' . $value),
+            get: fn ($value) => Storage::disk('s3')->url('fotos_perfil/' . $value),
         );
     }
 
