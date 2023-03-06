@@ -39,16 +39,17 @@ class AnuncioService
 
         $urlAnuncio = parse_url($anuncio->arquivo, PHP_URL_PATH);
         $arquivoAtual = basename($urlAnuncio);
-    
+        $caminhoS3 = 'anuncios/';
+
         $anuncio->fill($data->except('arquivo'));
         if ($arquivo = $data->hasFile('arquivo')) {
-            if(Storage::disk('s3')->get('anuncios/'. $arquivoAtual) !== null) {
-                Storage::disk('s3')->delete('anuncios/' . $arquivoAtual);
+            if (Storage::disk('s3')->get($caminhoS3. $arquivoAtual) !== null) {
+                Storage::disk('s3')->delete($caminhoS3 . $arquivoAtual);
             }
             $arquivo = $data->file('arquivo');
             $extensaoArquivo = $arquivo->getClientOriginalExtension();
             $nomeArquivo = Uuid::uuid6() . '.' . $extensaoArquivo;
-            $data['arquivo']->storePubliclyAs('anuncios/', $nomeArquivo, 's3');
+            $data['arquivo']->storePubliclyAs($caminhoS3, $nomeArquivo, 's3');
             $anuncio->arquivo = $nomeArquivo;
         }
         $anuncio->save();

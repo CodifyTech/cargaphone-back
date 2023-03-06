@@ -46,6 +46,7 @@ class UserService
         }
         $urlFoto = parse_url($user->foto_perfil, PHP_URL_PATH);
         $arquivoAtual = basename($urlFoto);
+        $caminhoS3 = 'fotos_perfil/';
         if (isset($request['cpf_usuario'])) {
             if ($user->cpf_usuario != $request['cpf_usuario']) {
                 if ($this->existeCpf($request['cpf_usuario'])) {
@@ -62,13 +63,13 @@ class UserService
 
         $user->fill($request->except('foto_perfil'));
         if ($request->hasFile('foto_perfil')) {
-            if (Storage::disk('s3')->get('fotos_perfil/' . $arquivoAtual) !== null) {
-                Storage::disk('s3')->delete('fotos_perfil/' . $arquivoAtual);
+            if (Storage::disk('s3')->get($caminhoS3 . $arquivoAtual) !== null) {
+                Storage::disk('s3')->delete($caminhoS3 . $arquivoAtual);
             }
             $foto = $request->file('foto_perfil');
             $extensaoArquivo = $foto->getClientOriginalExtension();
             $nomeArquivo = Uuid::uuid6() . '.' . $extensaoArquivo;
-            $request['foto_perfil']->storePubliclyAs('fotos_perfil/', $nomeArquivo, 's3');
+            $request['foto_perfil']->storePubliclyAs($caminhoS3, $nomeArquivo, 's3');
             $user->foto_perfil = $nomeArquivo;
         }
         $user->save();
