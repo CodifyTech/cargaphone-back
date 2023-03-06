@@ -7,9 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AlocarTotemEstabelecimentoRequest;
 use App\Http\Requests\CreateTotemRequest;
 use App\Http\Requests\UpdateTotemRequest;
+use App\Http\Resources\AnuncioResource;
+use App\Http\Resources\TotemResource;
 use App\Models\Totem;
 use App\Utils\Token;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Request;
 
 class TotemController extends Controller
 {
@@ -80,6 +83,7 @@ class TotemController extends Controller
      */
     public function show($id)
     {
+        dd('caiu aqui show');
         try {
             $this->authorize('view', Totem::class);
 
@@ -123,6 +127,41 @@ class TotemController extends Controller
             }
             throw new InternalServerErrorException();
         }
+    }
+
+    public function totemsEAnuncios(Request $request)
+    {
+
+        // try {
+
+        $identificador = $request->query('totem');
+        $totem = $this->totem->where('identificador', $identificador)->first();
+        $anuncios = $totem->anuncios;
+        // dd($anuncios);
+        // ->with([
+        // $totems = $this->totem->where('identificador', $identificador)->with([
+        //     'anuncios' => function ($query) {
+        //         $query->select('arquivo', 'updated_at', 'ativo');
+        //     }
+        // ])
+        // ->select('nome')
+        // ->without('pivot')
+        // ->get();
+        // return new AnuncioResource($totems);
+
+        return response()->json([
+            // 'list' => new TotemResource($totems)
+            'list' => $anuncios
+        ]);
+        // } catch (\Exception $e) {
+        //     if ($e instanceof AuthorizationException) {
+        //         return response()->json([
+        //             'exception' => 'Unauthorized',
+        //             'message' => $e->getMessage(),
+        //         ], 401);
+        //     }
+        //     throw new InternalServerErrorException();
+        // }
     }
 
     /**
