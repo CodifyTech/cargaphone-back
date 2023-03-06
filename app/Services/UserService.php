@@ -4,6 +4,7 @@ namespace App\Services;
 
 use Illuminate\Support\Str;
 use App\Models\User;
+use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
 
 class UserService
@@ -24,7 +25,7 @@ class UserService
         if (isset($request['foto_perfil'])) {
             $extensaoArquivo = $request['foto_perfil']->getClientOriginalExtension();
             $nome = Uuid::uuid6() . '.' . $extensaoArquivo;
-            $request['foto_perfil']->storePubliclyAs('images/', $nome, 's3');
+            $request['foto_perfil']->storePubliclyAs('fotos_perfil/', $nome, 's3');
             $request['foto_perfil'] = $nome;
         }
         $request['password'] = $userPassword;
@@ -43,7 +44,8 @@ class UserService
         if (empty($user)) {
             return '404';
         }
-
+        $urlFoto = parse_url($user->foto_perfil, PHP_URL_PATH);
+        $arquivoAtual = basename($urlFoto);
         if (isset($request['cpf_usuario'])) {
             if ($user->cpf_usuario != $request['cpf_usuario']) {
                 if ($this->existeCpf($request['cpf_usuario'])) {
@@ -59,12 +61,14 @@ class UserService
         }
 
         $user->fill($request->except('foto_perfil'));
-        if ($foto = $request->hasFile('foto_perfil')) {
+        if ($request->hasFile('foto_perfil')) {
+            if (Storage::disk('s3')->get('fotos_perfil/' . $arquivoAtual) !== null) {
+                Storage::disk('s3')->delete('fotos_perfil/' . $arquivoAtual);
+            }
             $foto = $request->file('foto_perfil');
             $extensaoArquivo = $foto->getClientOriginalExtension();
             $nomeArquivo = Uuid::uuid6() . '.' . $extensaoArquivo;
-            $caminhoArquivo = public_path() . '/storage/foto_perfil/';
-            $foto->move($caminhoArquivo, $nomeArquivo);
+            $request['foto_perfil']->storePubliclyAs('fotos_perfil/', $nomeArquivo, 's3');
             $user->foto_perfil = $nomeArquivo;
         }
         $user->save();

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Anuncio;
 use App\Utils\Token;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
 
 class AnuncioService
@@ -36,13 +37,18 @@ class AnuncioService
         if ($anuncio == null)
             return '404';
 
+        $urlAnuncio = parse_url($anuncio->arquivo, PHP_URL_PATH);
+        $arquivoAtual = basename($urlAnuncio);
+    
         $anuncio->fill($data->except('arquivo'));
         if ($arquivo = $data->hasFile('arquivo')) {
+            if(Storage::disk('s3')->get('anuncios/'. $arquivoAtual) !== null) {
+                Storage::disk('s3')->delete('anuncios/' . $arquivoAtual);
+            }
             $arquivo = $data->file('arquivo');
             $extensaoArquivo = $arquivo->getClientOriginalExtension();
             $nomeArquivo = Uuid::uuid6() . '.' . $extensaoArquivo;
-            $caminhoArquivo = public_path() . '/storage/anuncios/';
-            $arquivo->move($caminhoArquivo, $nomeArquivo);
+            $data['arquivo']->storePubliclyAs('anuncios/', $nomeArquivo, 's3');
             $anuncio->arquivo = $nomeArquivo;
         }
         $anuncio->save();
