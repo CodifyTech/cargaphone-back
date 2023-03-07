@@ -83,7 +83,6 @@ class TotemController extends Controller
      */
     public function show($id)
     {
-        dd('caiu aqui show');
         try {
             $this->authorize('view', Totem::class);
 
