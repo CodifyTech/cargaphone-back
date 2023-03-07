@@ -31,7 +31,6 @@ class AnuncioPolicy
      */
     public function view(User $user, Anuncio $anuncio)
     {
-        // dd($user->tenant_id);
         return $user->tenant_id === $anuncio->tenant_id
             && $user->perfil == 2
             || $user->perfil == 1

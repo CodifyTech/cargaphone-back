@@ -11,6 +11,9 @@ Route::get('ping', function () {
     ]);
 });
 
+Route::get('/GetVideosList', [TotemController::class, 'totemsEAnuncios']);
+Route::get('/getvideoslist', [TotemController::class, 'totemsEAnuncios']);
+
 Route::middleware('auth:api')->group(function () {
 
     Route::prefix('usuario')->group(function () {
@@ -80,6 +83,8 @@ Route::middleware('auth:api')->group(function () {
         Route::get('/com/estabelecimento/anuncios', [TotemController::class, 'totemComEstabelecimentosEAnucios']);
 
     });
+
+
 
 
     Route::prefix('anuncio')->group(function () {
