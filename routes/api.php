@@ -75,7 +75,6 @@ Route::middleware('auth:api')->group(function () {
         Route::post('', [TotemController::class, 'store']);
         Route::get('/{id}', [TotemController::class, 'show']);
         Route::get('/{id}/anuncio', [TotemController::class, 'totemsComAnuncios']);
-        // Route::get('/getvideoslist', [TotemController::class, 'totemsEAnuncios']);
         Route::put('/{id}', [TotemController::class, 'update']);
         Route::patch('/{id}', [TotemController::class, 'alocarTotemEstabelecimento']);
         Route::delete('/{id}', [TotemController::class, 'destroy']);
