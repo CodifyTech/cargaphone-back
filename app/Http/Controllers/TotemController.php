@@ -7,9 +7,12 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\AlocarTotemEstabelecimentoRequest;
 use App\Http\Requests\CreateTotemRequest;
 use App\Http\Requests\UpdateTotemRequest;
+use App\Http\Resources\AnuncioResource;
+use App\Http\Resources\TotemResource;
 use App\Models\Totem;
 use App\Utils\Token;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Request;
 
 class TotemController extends Controller
 {
@@ -121,6 +124,32 @@ class TotemController extends Controller
                     'message' => $e->getMessage(),
                 ], 401);
             }
+            throw new InternalServerErrorException();
+        }
+    }
+
+    public function totemsEAnuncios(Request $request)
+    {
+        try {
+            $identificador = $request->query('totem');
+            $totem = $this->totem->where('identificador', $identificador)->first();
+            $anuncios = $totem->anuncios()
+                ->select('arquivo as url', 'ativo as exclude', 'updated_at as dataAlteracao')
+                ->where('ativo', '=', 1)
+                ->get()
+                ->map(function ($anuncio, $index) {
+                    if ($anuncio->exclude) {
+                        $anuncio->exclude = false;
+                    }
+                    $anuncio['index'] = $index + 0;
+                    unset($anuncio->pivot);
+                    return $anuncio;
+                });
+
+            return response()->json([
+                'list' => $anuncios
+            ]);
+        } catch (\Exception $e) {
             throw new InternalServerErrorException();
         }
     }
