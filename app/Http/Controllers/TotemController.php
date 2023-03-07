@@ -131,37 +131,28 @@ class TotemController extends Controller
 
     public function totemsEAnuncios(Request $request)
     {
+        try {
+            $identificador = $request->query('totem');
+            $totem = $this->totem->where('identificador', $identificador)->first();
+            $anuncios = $totem->anuncios()
+                ->select('arquivo as url', 'ativo as exclude', 'updated_at as dataAlteracao')
+                ->where('ativo', '=', 1)
+                ->get()
+                ->map(function ($anuncio, $index) {
+                    if ($anuncio->exclude) {
+                        $anuncio->exclude = false;
+                    }
+                    $anuncio['index'] = $index + 0;
+                    unset($anuncio->pivot);
+                    return $anuncio;
+                });
 
-        // try {
-
-        $identificador = $request->query('totem');
-        $totem = $this->totem->where('identificador', $identificador)->first();
-        $anuncios = $totem->anuncios;
-        // dd($anuncios);
-        // ->with([
-        // $totems = $this->totem->where('identificador', $identificador)->with([
-        //     'anuncios' => function ($query) {
-        //         $query->select('arquivo', 'updated_at', 'ativo');
-        //     }
-        // ])
-        // ->select('nome')
-        // ->without('pivot')
-        // ->get();
-        // return new AnuncioResource($totems);
-
-        return response()->json([
-            // 'list' => new TotemResource($totems)
-            'list' => $anuncios
-        ]);
-        // } catch (\Exception $e) {
-        //     if ($e instanceof AuthorizationException) {
-        //         return response()->json([
-        //             'exception' => 'Unauthorized',
-        //             'message' => $e->getMessage(),
-        //         ], 401);
-        //     }
-        //     throw new InternalServerErrorException();
-        // }
+            return response()->json([
+                'list' => $anuncios
+            ]);
+        } catch (\Exception $e) {
+            throw new InternalServerErrorException();
+        }
     }
 
     /**

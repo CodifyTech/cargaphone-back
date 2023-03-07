@@ -33,8 +33,17 @@ class Anuncio extends Model
     ];
 
     protected $casts = [
-        'tipo_campanha' => CategoriaAnuncio::class
+        'tipo_campanha' => CategoriaAnuncio::class,
+        'exclude' => 'boolean',
+        'dataAlteracao' => 'datetime:d/m/Y'
     ];
+
+    protected function url(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) => Storage::disk('s3')->url('anuncios/' . $value),
+        );
+    }
 
     protected function arquivo(): Attribute
     {
