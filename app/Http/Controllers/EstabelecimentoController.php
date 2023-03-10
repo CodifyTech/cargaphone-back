@@ -219,7 +219,7 @@ class EstabelecimentoController extends Controller
     public function pesquisarResponsavel($responsavel)
     {
         try {
-            $Estabelecimento = Estabelecimento::where('nome_responsavel', 'like', '%' .  $responsavel . '%')->paginate();
+            $Estabelecimento = Estabelecimento::where('responsavel', 'like', '%' .  $responsavel . '%')->paginate();
             return response()->json($Estabelecimento);
         } catch (\Exception $e) {
             if ($e instanceof AuthorizationException) {
